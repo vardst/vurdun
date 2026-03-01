@@ -164,54 +164,26 @@
             display: flex; align-items: center; justify-content: center;
             position: relative;
             opacity: 0; animation: fadeIn 1.2s ease 0.4s forwards;
+            overflow: visible;
         }
         .donut-container {
             position: relative;
-            width: clamp(240px, 24vw, 360px);
-            height: clamp(240px, 24vw, 360px);
+            width: clamp(260px, 26vw, 400px);
+            height: clamp(260px, 26vw, 400px);
+            overflow: visible;
             animation: float 6s ease-in-out infinite;
         }
-        .donut-glow {
-            position: absolute; inset: -50%;
-            background: radial-gradient(circle, rgba(232,116,97,0.1) 0%, transparent 60%);
+        .donut-canvas {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250%; height: 250%;
+            display: block;
             pointer-events: none;
         }
-        .donut {
-            width: 100%; height: 100%; border-radius: 50%;
-            background: var(--coral);
-            position: relative;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow:
-                0 30px 80px rgba(232,116,97,0.25),
-                inset 0 -12px 25px rgba(0,0,0,0.25),
-                inset 0 12px 25px rgba(255,200,180,0.12);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
+        .donut-glow {
+            display: none;
         }
-        .donut::before {
-            content: ''; position: absolute; inset: 0; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%, rgba(0,0,0,0.12) 100%);
-        }
-        .donut-hole {
-            width: 36%; height: 36%; border-radius: 50%;
-            background: var(--bg); z-index: 2;
-            box-shadow: inset 0 4px 20px rgba(0,0,0,0.6);
-            position: relative; overflow: hidden;
-        }
-        .donut-hole::after {
-            content: ''; position: absolute; inset: 20%; border-radius: 50%;
-            opacity: 0; animation: glitch 8s infinite;
-        }
-
-        .orbit-dot {
-            position: absolute; border-radius: 50%;
-            animation: dotFloat 4s ease-in-out infinite;
-        }
-        .orbit-dot:nth-child(1) { width: 6px; height: 6px; top: 5%; left: 20%; background: #FFE066; animation-duration: 3.5s; }
-        .orbit-dot:nth-child(2) { width: 7px; height: 7px; top: 40%; right: 1%; background: #66D9FF; animation-delay: 1s; animation-duration: 4.2s; }
-        .orbit-dot:nth-child(3) { width: 5px; height: 5px; bottom: 8%; left: 35%; background: #FF66B2; animation-delay: 0.5s; animation-duration: 3.8s; }
-        .orbit-dot:nth-child(4) { width: 6px; height: 6px; top: 14%; right: 14%; background: #66FF99; animation-delay: 1.5s; animation-duration: 4.5s; }
-        .orbit-dot:nth-child(5) { width: 5px; height: 5px; bottom: 20%; right: 10%; background: #B266FF; animation-delay: 0.8s; animation-duration: 3.2s; }
 
         .scroll-indicator {
             position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
@@ -420,12 +392,6 @@
             94% { opacity: 0.25; background: #66D9FF; transform: translate(-1px, 2px) scale(0.96); border-radius: 50%; }
             96% { opacity: 0; }
         }
-        @keyframes dotFloat {
-            0%, 100% { transform: translate(0, 0); opacity: 0.5; }
-            25% { transform: translate(4px, -6px); opacity: 0.85; }
-            50% { transform: translate(-2px, 4px); opacity: 0.35; }
-            75% { transform: translate(6px, 2px); opacity: 0.7; }
-        }
         @keyframes scrollPulse {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 0.8; }
@@ -437,13 +403,6 @@
         @keyframes badgePulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(232,116,97,0.35); }
             50% { box-shadow: 0 0 0 6px rgba(232,116,97,0); }
-        }
-        @keyframes donutJiggle {
-            0%, 100% { transform: rotate(0deg); }
-            20% { transform: rotate(-4deg) scale(1.03); }
-            40% { transform: rotate(3deg); }
-            60% { transform: rotate(-2deg); }
-            80% { transform: rotate(1deg); }
         }
 
         /* ── SCROLL REVEAL ── */
@@ -464,7 +423,7 @@
         @media (max-width: 900px) {
             .hero { grid-template-columns: 1fr; text-align: center; padding-top: 7rem; }
             .hero-visual { order: -1; margin-bottom: 1.5rem; }
-            .donut-container { width: 180px; height: 180px; }
+            .donut-container { width: 200px; height: 200px; }
             .hero-links { justify-content: center; }
             .hero-content { padding-top: 0; }
             nav { padding: 1rem 1.5rem; }
@@ -522,14 +481,7 @@
     <div class="hero-visual">
         <div class="donut-container">
             <div class="donut-glow"></div>
-            <div class="donut" id="donut">
-                <div class="donut-hole"></div>
-            </div>
-            <div class="orbit-dot"></div>
-            <div class="orbit-dot"></div>
-            <div class="orbit-dot"></div>
-            <div class="orbit-dot"></div>
-            <div class="orbit-dot"></div>
+            <canvas class="donut-canvas" id="donutCanvas"></canvas>
         </div>
     </div>
 
@@ -704,9 +656,8 @@
         requestAnimationFrame(loop);
     })();
 
-    // ── Donut parallax + jiggle ──
+    // ── Donut parallax ──
     const donutC = document.querySelector('.donut-container');
-    const donutEl = document.getElementById('donut');
     const hero = document.querySelector('.hero');
 
     hero.addEventListener('mousemove', e => {
@@ -717,11 +668,6 @@
         donutC.style.transition = 'translate 0.4s ease-out';
     });
     hero.addEventListener('mouseleave', () => { donutC.style.translate = '0 0'; });
-
-    donutEl.addEventListener('click', () => {
-        donutEl.style.animation = 'donutJiggle 0.5s ease';
-        donutEl.addEventListener('animationend', () => { donutEl.style.animation = ''; }, { once: true });
-    });
 
     // ── Magnetic hero buttons ──
     document.querySelectorAll('.hero-link').forEach(btn => {
@@ -744,6 +690,339 @@
         });
         btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
+
+    // ══════════════════════════════════════════
+    // ── WebGL Donut (donut2 style) ──
+    // ══════════════════════════════════════════
+    (function initDonut() {
+        const cv = document.getElementById('donutCanvas');
+        if (!cv) return;
+        const gl = cv.getContext('webgl2', { antialias: false, alpha: true, premultipliedAlpha: true });
+        if (!gl) return;
+
+        function compile(type, src) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, src);
+            gl.compileShader(s);
+            if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); return null; }
+            return s;
+        }
+        function linkP(vS, fS) {
+            const v = compile(gl.VERTEX_SHADER, vS), f = compile(gl.FRAGMENT_SHADER, fS);
+            if (!v || !f) return null;
+            const p = gl.createProgram();
+            gl.attachShader(p, v); gl.attachShader(p, f); gl.linkProgram(p);
+            if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.error(gl.getProgramInfoLog(p)); return null; }
+            return p;
+        }
+
+        const VS = `#version 300 es
+in vec2 a;
+void main(){gl_Position=vec4(a,0,1);}`;
+
+        const FS = `#version 300 es
+precision highp float;
+uniform vec2 R;
+uniform float T;
+uniform vec2 M;
+out vec4 O;
+
+const float PI  = 3.14159265359;
+const float TAU = 6.28318530718;
+
+// Portfolio warm palette
+const vec3 BG    = vec3(0.047, 0.043, 0.035);
+const vec3 CORAL = vec3(0.91, 0.455, 0.38);
+const vec3 PEACH = vec3(0.96, 0.776, 0.722);
+const vec3 CREAM = vec3(0.94, 0.90, 0.855);
+
+mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}
+
+float hash13(vec3 p){
+    p=fract(p*0.1031);p+=dot(p,p.zyx+31.32);
+    return fract((p.x+p.y)*p.z);
+}
+
+float noise3(vec3 p){
+    vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+    return mix(
+        mix(mix(hash13(i),hash13(i+vec3(1,0,0)),f.x),
+            mix(hash13(i+vec3(0,1,0)),hash13(i+vec3(1,1,0)),f.x),f.y),
+        mix(mix(hash13(i+vec3(0,0,1)),hash13(i+vec3(1,0,1)),f.x),
+            mix(hash13(i+vec3(0,1,1)),hash13(i+vec3(1,1,1)),f.x),f.y),f.z);
+}
+
+float smin(float a,float b,float k){
+    float h=clamp(0.5+0.5*(b-a)/k,0.0,1.0);
+    return mix(b,a,h)-k*h*(1.0-h);
+}
+
+float sdTorus(vec3 p,float R,float r){
+    vec2 q=vec2(length(p.xz)-R,p.y);
+    return length(q)-r;
+}
+
+// Warm palette functions
+vec3 pal(float t){
+    return vec3(0.65,0.42,0.35)+vec3(0.30,0.22,0.18)*cos(TAU*(t+vec3(0.0,0.08,0.18)));
+}
+vec3 pal2(float t){
+    return vec3(0.58,0.44,0.38)+vec3(0.38,0.30,0.24)*cos(TAU*(t+vec3(0.0,0.10,0.22)));
+}
+
+// Scene — 4 interlocking tori with organic blend
+vec2 map(vec3 p){
+    float t=T;
+
+    vec3 p1=p;
+    p1.xz*=rot(t*0.15+M.x*3.0);
+    p1.yz*=rot(0.4+M.y*2.0);
+    float d1=sdTorus(p1,1.5,0.42);
+
+    vec3 p2=p;
+    p2.xy*=rot(t*0.2+M.x*3.0);
+    p2.yz*=rot(PI*0.5+M.y*2.0);
+    float d2=sdTorus(p2,1.5,0.22);
+
+    vec3 p3=p;
+    p3.xz*=rot(t*0.25+M.x*3.0);
+    p3.yz*=rot(PI*0.25+sin(t*0.3)*0.15+M.y*2.0);
+    float d3=sdTorus(p3,1.5,0.13);
+
+    vec3 p4=p;
+    p4.xz*=rot(-t*0.18+M.x*3.0);
+    p4.yz*=rot(PI*0.75+sin(t*0.2)*0.2+M.y*2.0);
+    float d4=sdTorus(p4,1.5,0.10);
+
+    float d=smin(d1,d2,0.35);
+    d=smin(d,d3,0.25);
+    d=smin(d,d4,0.3);
+
+    d+=noise3(p*6.0+t*0.4)*0.025;
+
+    return vec2(d,1.0);
+}
+
+vec3 calcNorm(vec3 p){
+    vec2 e=vec2(0.001,0.0);
+    return normalize(vec3(
+        map(p+e.xyy).x-map(p-e.xyy).x,
+        map(p+e.yxy).x-map(p-e.yxy).x,
+        map(p+e.yyx).x-map(p-e.yyx).x));
+}
+
+float calcAO(vec3 p,vec3 n){
+    float occ=0.0,w=1.0;
+    for(int i=0;i<5;i++){
+        float h=0.01+0.12*float(i);
+        occ+=(h-map(p+h*n).x)*w;w*=0.85;
+    }
+    return clamp(1.0-2.5*occ,0.0,1.0);
+}
+
+float softShadow(vec3 ro,vec3 rd,float mint,float maxt){
+    float res=1.0,t=mint;
+    for(int i=0;i<24;i++){
+        float h=map(ro+rd*t).x;
+        res=min(res,12.0*h/t);
+        t+=clamp(h,0.02,0.25);
+        if(h<0.001||t>maxt)break;
+    }
+    return clamp(res,0.0,1.0);
+}
+
+float fresnel(float vdn){
+    return 0.04+0.96*pow(1.0-vdn,5.0);
+}
+
+float march(vec3 ro,vec3 rd){
+    float t=0.0;
+    for(int i=0;i<100;i++){
+        float d=map(ro+rd*t).x;
+        if(d<0.001)return t;
+        if(t>30.0)break;
+        t+=d*0.85;
+    }
+    return -1.0;
+}
+
+void main(){
+    vec2 uv=(gl_FragCoord.xy-0.5*R)/R.y;
+    float t=T;
+
+    // Camera — auto orbit + subtle mouse
+    float camA=t*0.06+M.x*0.5;
+    float camE=0.2+sin(t*0.04)*0.1+M.y*0.3;
+    vec3 ro=vec3(cos(camA)*cos(camE),sin(camE),sin(camA)*cos(camE))*6.5;
+    vec3 ta=vec3(0);
+    vec3 fwd=normalize(ta-ro);
+    vec3 right=normalize(cross(fwd,vec3(0,1,0)));
+    vec3 up=cross(right,fwd);
+    vec3 rd=normalize(fwd*1.2+right*uv.x+up*uv.y);
+
+    vec3 col=BG*0.3;
+    float bgV=length(uv);
+
+    // Volumetric glow
+    vec3 glow=vec3(0.0);
+    {
+        float gt=0.0;
+        for(int i=0;i<40;i++){
+            vec3 gp=ro+rd*gt;
+            float gd=map(gp).x;
+            float intensity=0.012/(0.04+gd*gd*8.0);
+            float ang=atan(gp.z,gp.x)/TAU+0.5;
+            glow+=pal(ang+t*0.05)*intensity;
+            gt+=max(abs(gd)*0.5,0.05);
+            if(gt>12.0)break;
+        }
+    }
+
+    // Raymarch
+    float hit=march(ro,rd);
+    float matHit=0.0;
+
+    if(hit>0.0){
+        matHit=1.0;
+        vec3 p=ro+rd*hit;
+        vec3 n=calcNorm(p);
+        vec3 v=-rd;
+
+        float ang=atan(p.z,p.x)/TAU+0.5;
+        float elev=atan(p.y,length(p.xz))/PI+0.5;
+        float vdn=max(dot(v,n),0.0);
+
+        vec3 L1=normalize(vec3(2.0,3.0,-1.0));
+        vec3 L2=normalize(vec3(-1.5,0.5,2.0));
+        vec3 L3=normalize(vec3(0.0,-2.0,-1.0));
+
+        float diff1=max(dot(n,L1),0.0);
+        float diff2=max(dot(n,L2),0.0);
+        float diff3=max(dot(n,L3),0.0);
+
+        float spec1=pow(max(dot(n,normalize(v+L1)),0.0),80.0);
+        float spec2=pow(max(dot(n,normalize(v+L2)),0.0),40.0);
+
+        float fres=fresnel(vdn);
+        vec3 iriCol=pal2(vdn*1.5+ang*0.5+elev*0.3+t*0.08);
+        vec3 baseCol=pal(ang+t*0.03);
+        vec3 surfCol=mix(baseCol*0.35,iriCol,fres*0.7+0.3);
+
+        float ao=calcAO(p,n);
+        float sh=softShadow(p+n*0.02,L1,0.05,5.0);
+
+        // Warm lighting
+        vec3 lit=vec3(0.0);
+        lit+=diff1*CREAM*1.2*sh;
+        lit+=diff2*CORAL*0.5;
+        lit+=diff3*vec3(0.8,0.4,0.3)*0.3;
+        lit+=spec1*PEACH*2.5*sh;
+        lit+=spec2*CORAL*1.0;
+
+        vec3 amb=vec3(0.05,0.04,0.035)*ao;
+
+        float rim=1.0-vdn;
+        rim=smoothstep(0.25,1.0,rim);
+        vec3 rimCol=pal(ang+t*0.1+0.5)*2.0;
+
+        col=surfCol*lit+amb;
+        col+=rimCol*rim*0.45;
+
+        vec3 refl=reflect(-v,n);
+        col+=pal(refl.x*0.5+t*0.02)*smoothstep(-0.2,1.0,refl.y)*0.2*fres;
+
+        // Energy veins
+        float vein=sin(ang*TAU*12.0+t*2.0)*sin(elev*TAU*8.0+t*1.5);
+        vein=smoothstep(0.88,1.0,vein);
+        col+=pal(t*0.12)*vein*0.3;
+    }
+
+    col+=glow*0.08;
+
+    // Post-processing
+    float ca=length(uv)*0.04;
+    col.r*=1.0+ca*0.6;
+    col.b*=1.0-ca*0.2;
+
+    float lum=dot(col,vec3(0.2126,0.7152,0.0722));
+    col+=col*smoothstep(0.6,1.8,lum)*0.4;
+
+    float vig=1.0-dot(uv*0.65,uv*0.65);
+    col*=smoothstep(-0.05,0.9,vig);
+
+    col=col/(1.0+col);
+    col=pow(col,vec3(1.0/2.2));
+
+    col+=hash13(vec3(gl_FragCoord.xy,fract(t)))*0.02-0.01;
+
+    // Alpha — surface + glow, radial fade
+    float glowStr=clamp(dot(glow,vec3(0.3)),0.0,1.0);
+    glowStr=smoothstep(0.03,0.25,glowStr)*glowStr;
+    float finalA=max(matHit,glowStr);
+    float radFade=1.0-smoothstep(0.25,0.45,bgV);
+    finalA*=radFade;
+    finalA=finalA<0.01?0.0:finalA;
+
+    O=vec4(col*finalA,finalA);
+}
+`;
+
+        const prog = linkP(VS, FS);
+        if (!prog) return;
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+        const vao = gl.createVertexArray();
+        gl.bindVertexArray(vao);
+        const aLoc = gl.getAttribLocation(prog, 'a');
+        gl.enableVertexAttribArray(aLoc);
+        gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
+
+        gl.useProgram(prog);
+        const uR = gl.getUniformLocation(prog, 'R');
+        const uT = gl.getUniformLocation(prog, 'T');
+        const uM = gl.getUniformLocation(prog, 'M');
+
+        let dmx = 0, dmy = 0;
+        hero.addEventListener('mousemove', e => {
+            const r = hero.getBoundingClientRect();
+            dmx = (e.clientX - r.left) / r.width - 0.5;
+            dmy = (e.clientY - r.top) / r.height - 0.5;
+        });
+
+        function resizeCanvas() {
+            const dpr = Math.min(devicePixelRatio, 1.5);
+            cv.width = cv.clientWidth * dpr;
+            cv.height = cv.clientHeight * dpr;
+        }
+        addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+        const t0 = performance.now();
+        let smx = 0, smy = 0;
+
+        function donutFrame() {
+            const t = (performance.now() - t0) * 0.001;
+            smx += (dmx - smx) * 0.04;
+            smy += (dmy - smy) * 0.04;
+
+            gl.viewport(0, 0, cv.width, cv.height);
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.useProgram(prog);
+            gl.bindVertexArray(vao);
+            gl.uniform2f(uR, cv.width, cv.height);
+            gl.uniform1f(uT, t);
+            gl.uniform2f(uM, smx * 0.25, smy * 0.25);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+            requestAnimationFrame(donutFrame);
+        }
+        requestAnimationFrame(donutFrame);
+    })();
 </script>
 
 </body>
