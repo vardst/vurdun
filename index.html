@@ -288,6 +288,154 @@
         .skill-name { font-weight: 600; color: var(--cream); font-size: 0.88rem; margin-bottom: 0.15rem; }
         .skill-detail { font-size: 0.75rem; color: var(--text-muted); }
 
+        /* ── PROJECTS ── */
+        .projects { background: var(--bg-alt); }
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem; max-width: 1200px;
+            perspective: 1000px;
+        }
+        .project-card {
+            --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%;
+            position: relative;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 1.75rem; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 12px;
+            transform-style: preserve-3d;
+            transform: rotateX(var(--rx)) rotateY(var(--ry));
+            will-change: transform;
+            transition: border-color 0.3s, box-shadow 0.4s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none; color: inherit; cursor: pointer;
+            overflow: hidden;
+        }
+        /* Cursor spotlight */
+        .project-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle 180px at var(--mx) var(--my), rgba(232,116,97,0.15), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1;
+            border-radius: inherit;
+        }
+        .project-card:hover::before { opacity: 1; }
+        /* Themed background layer */
+        .project-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: inherit;
+        }
+        .project-card:hover::after { opacity: 1; }
+        .project-card:hover {
+            border-color: var(--coral-dim);
+            box-shadow: 0 8px 40px var(--coral-glow), 0 0 20px rgba(232,116,97,0.06);
+            color: inherit;
+        }
+        /* StructView — pulsing grid dots */
+        .project-card[data-theme="structview"]::after {
+            background-image:
+                radial-gradient(circle 1.5px at center, rgba(232,116,97,0.25) 0%, transparent 100%);
+            background-size: 24px 24px;
+            animation: gridPulse 3s ease-in-out infinite;
+        }
+        /* SlotBalancer — vertical scrolling digit strips */
+        .project-card[data-theme="slotbalancer"]::after {
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 14px,
+                    rgba(232,116,97,0.08) 14px,
+                    rgba(232,116,97,0.08) 16px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 30px,
+                    rgba(232,116,97,0.04) 30px,
+                    rgba(232,116,97,0.04) 31px
+                );
+            background-size: 31px 30px, 31px 30px;
+            animation: reelScroll 2s linear infinite;
+        }
+        /* Football Highlighter — horizontal scan lines */
+        .project-card[data-theme="football"]::after {
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(232,116,97,0.06) 3px,
+                    rgba(232,116,97,0.06) 4px
+                );
+            background-size: 100% 4px;
+            animation: scanLines 8s linear infinite;
+        }
+        /* BigNumber — drifting number characters via gradient pattern */
+        .project-card[data-theme="bignumber"]::after {
+            background-image:
+                radial-gradient(circle 2px at 15% 20%, rgba(232,116,97,0.2) 0%, transparent 100%),
+                radial-gradient(circle 2px at 45% 60%, rgba(232,116,97,0.15) 0%, transparent 100%),
+                radial-gradient(circle 2px at 75% 30%, rgba(232,116,97,0.2) 0%, transparent 100%),
+                radial-gradient(circle 2px at 30% 80%, rgba(232,116,97,0.12) 0%, transparent 100%),
+                radial-gradient(circle 2px at 85% 70%, rgba(232,116,97,0.18) 0%, transparent 100%),
+                radial-gradient(circle 2px at 60% 10%, rgba(232,116,97,0.15) 0%, transparent 100%);
+            background-size: 100% 100%;
+            animation: digitDrift 6s linear infinite;
+        }
+
+        .project-card-top { margin-bottom: 1.25rem; position: relative; z-index: 2; }
+        .project-card-header {
+            display: flex; align-items: center; gap: 0.6rem;
+            margin-bottom: 0.65rem;
+        }
+        .project-card-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--bg); border: 1px solid var(--border);
+            flex-shrink: 0; transition: border-color 0.3s, background 0.3s;
+            position: relative; z-index: 2;
+        }
+        .project-card:hover .project-card-icon {
+            border-color: var(--coral-dim); background: var(--coral-glow);
+        }
+        .project-card-icon svg { width: 18px; height: 18px; color: var(--coral); }
+        .project-card-name {
+            font-size: 1.05rem; font-weight: 700; color: var(--cream);
+            letter-spacing: -0.01em; position: relative; z-index: 2;
+        }
+        .project-card-desc {
+            font-size: 0.8rem; color: var(--text-muted); line-height: 1.55;
+            position: relative; z-index: 2;
+        }
+        .project-card-footer {
+            display: flex; align-items: center; gap: 0.75rem;
+            position: relative; z-index: 2;
+        }
+        .project-lang {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+        }
+        .project-lang-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .project-lang-dot.ts { background: #3178C6; }
+        .project-lang-dot.py { background: #3572A5; }
+        .project-view {
+            margin-left: auto;
+            font-size: 0.7rem; font-weight: 700; color: var(--coral);
+            letter-spacing: 0.06em; text-transform: uppercase;
+            display: flex; align-items: center; gap: 0.3rem;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .project-card:hover .project-view { opacity: 1; }
+        .project-view svg { width: 12px; height: 12px; }
+
         /* ── BACKGROUND ── */
         .background { background: var(--bg-alt); }
         .bg-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; max-width: 900px; }
@@ -405,6 +553,24 @@
             50% { box-shadow: 0 0 0 6px rgba(232,116,97,0); }
         }
 
+        /* ── PROJECT CARD THEME ANIMATIONS ── */
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.6; background-size: 24px 24px; }
+            50% { opacity: 1; background-size: 28px 28px; }
+        }
+        @keyframes reelScroll {
+            from { background-position: 0 0; }
+            to { background-position: 0 -30px; }
+        }
+        @keyframes scanLines {
+            from { background-position: -100% 0; }
+            to { background-position: 100% 0; }
+        }
+        @keyframes digitDrift {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+
         /* ── SCROLL REVEAL ── */
         .reveal {
             opacity: 0; transform: translateY(24px);
@@ -430,6 +596,13 @@
             .nav-links { gap: 1.5rem; }
             .timeline-item { grid-template-columns: 1fr; gap: 0.4rem; }
             .skills-grid, .bg-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: repeat(2, 1fr); perspective: none; }
+            .project-card {
+                transform: none !important;
+                transition: border-color 0.3s, box-shadow 0.4s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .project-card:hover { transform: translateY(-4px) !important; }
+            .project-card::before { display: none; }
         }
         @media (max-width: 600px) {
             .nav-links { display: none; }
@@ -437,6 +610,7 @@
             .section-title { font-size: 1.8rem; }
             .hero-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; max-width: 280px; margin: 0 auto; }
             .hero-link { justify-content: center; }
+            .projects-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -449,6 +623,7 @@
     <ul class="nav-links">
         <li><a href="#experience">Experience</a></li>
         <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
         <li><a href="#background">Background</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
@@ -569,6 +744,73 @@
             <div class="skill-item"><div class="skill-name">Notion</div></div>
             <div class="skill-item"><div class="skill-name">Excel</div></div>
         </div>
+    </div>
+</section>
+
+<section class="projects" id="projects">
+    <div class="section-label reveal">Open Source</div>
+    <h2 class="section-title reveal">Projects</h2>
+    <div class="projects-grid">
+        <a href="https://github.com/vardst/structview" target="_blank" rel="noopener" class="project-card reveal-stagger" data-theme="structview" style="--i:0">
+            <div class="project-card-top">
+                <div class="project-card-header">
+                    <div class="project-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
+                    <div class="project-card-name">StructView</div>
+                </div>
+                <div class="project-card-desc">Visual JSON/YAML editor with three synced panels — tree view, code editor, and schema-aware form.</div>
+            </div>
+            <div class="project-card-footer">
+                <span class="project-lang"><span class="project-lang-dot ts"></span>TypeScript</span>
+                <span class="project-view">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+        </a>
+        <a href="https://github.com/vardst/slotbalancer" target="_blank" rel="noopener" class="project-card reveal-stagger" data-theme="slotbalancer" style="--i:1">
+            <div class="project-card-top">
+                <div class="project-card-header">
+                    <div class="project-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18.01"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="16" y1="6" x2="16" y2="14"/></svg>
+                    </div>
+                    <div class="project-card-name">SlotBalancer</div>
+                </div>
+                <div class="project-card-desc">Video slot machine math engine — RTP balancer, reel strip editor, and Monte Carlo simulator.</div>
+            </div>
+            <div class="project-card-footer">
+                <span class="project-lang"><span class="project-lang-dot ts"></span>TypeScript</span>
+                <span class="project-view">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+        </a>
+        <a href="https://github.com/vardst/football-highlighter" target="_blank" rel="noopener" class="project-card reveal-stagger" data-theme="football" style="--i:2">
+            <div class="project-card-top">
+                <div class="project-card-header">
+                    <div class="project-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>
+                    <div class="project-card-name">Football Highlighter</div>
+                </div>
+                <div class="project-card-desc">Automated soccer highlight pipeline — audio spike detection, YOLO ball tracking, smart 9:16 crop.</div>
+            </div>
+            <div class="project-card-footer">
+                <span class="project-lang"><span class="project-lang-dot py"></span>Python</span>
+                <span class="project-view">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+        </a>
+        <a href="https://github.com/vardst/bignumber" target="_blank" rel="noopener" class="project-card reveal-stagger" data-theme="bignumber" style="--i:3">
+            <div class="project-card-top">
+                <div class="project-card-header">
+                    <div class="project-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="project-card-name">BigNumber</div>
+                </div>
+                <div class="project-card-desc">Arithmetic library for large numbers with suffix notation — handles k, M, B and beyond.</div>
+            </div>
+            <div class="project-card-footer">
+                <span class="project-lang"><span class="project-lang-dot py"></span>Python</span>
+                <span class="project-view">View <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+        </a>
     </div>
 </section>
 
@@ -698,6 +940,63 @@
         });
         btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
+
+    // ── 3D Tilt Project Cards ──
+    (function initTiltCards() {
+        const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+        const isSmallScreen = () => window.innerWidth < 900;
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            let targetRx = 0, targetRy = 0, currentRx = 0, currentRy = 0;
+            let targetMx = 50, targetMy = 50;
+            let hovering = false;
+            let rafId = null;
+
+            function animate() {
+                currentRx += (targetRx - currentRx) * 0.12;
+                currentRy += (targetRy - currentRy) * 0.12;
+
+                if (Math.abs(currentRx - targetRx) > 0.01 || Math.abs(currentRy - targetRy) > 0.01) {
+                    card.style.setProperty('--rx', currentRx + 'deg');
+                    card.style.setProperty('--ry', currentRy + 'deg');
+                    rafId = requestAnimationFrame(animate);
+                } else {
+                    card.style.setProperty('--rx', targetRx + 'deg');
+                    card.style.setProperty('--ry', targetRy + 'deg');
+                    if (!hovering) rafId = null;
+                    else rafId = requestAnimationFrame(animate);
+                }
+            }
+
+            card.addEventListener('mousemove', e => {
+                if (isTouchDevice || isSmallScreen()) return;
+
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+
+                targetRx = (0.5 - y) * 24;  // ±12deg
+                targetRy = (x - 0.5) * 24;
+
+                targetMx = x * 100;
+                targetMy = y * 100;
+                card.style.setProperty('--mx', targetMx + '%');
+                card.style.setProperty('--my', targetMy + '%');
+
+                hovering = true;
+                if (!rafId) rafId = requestAnimationFrame(animate);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                hovering = false;
+                targetRx = 0;
+                targetRy = 0;
+                card.style.setProperty('--mx', '50%');
+                card.style.setProperty('--my', '50%');
+                if (!rafId) rafId = requestAnimationFrame(animate);
+            });
+        });
+    })();
 
     // ══════════════════════════════════════════
     // ── WebGL Donut (donut2 style) ──
