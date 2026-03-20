@@ -3,3 +3,6 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/vardst/public_html/
     - /bin/cp index.html $DEPLOYPATH
+    - /bin/mkdir -p $DEPLOYPATH/lus
+    - /bin/cp lus/index.html $DEPLOYPATH/lus/
+    - /bin/cp lus/sherma.mp3 $DEPLOYPATH/lus/

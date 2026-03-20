@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Code Quest — Learn to Vibe Code</title>
+    <meta name="description" content="45 real projects across 5 difficulty tiers. An interactive roadmap to learn vibe coding — building software with AI assistants, one quest at a time.">
+    <meta property="og:title" content="Vibe Code Quest — Learn to Vibe Code">
+    <meta property="og:description" content="45 real projects across 5 difficulty tiers. Learn to build anything with AI-assisted vibe coding.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vardan.am/lus/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0C0B09;
+            --bg-alt: #111110;
+            --surface: #191817;
+            --surface-hover: #201E1C;
+            --border: #282522;
+            --coral: #F0864A;
+            --coral-dim: #D06E38;
+            --coral-glow: rgba(240, 134, 74, 0.14);
+            --peach: #F7C9A5;
+            --cream: #F2E8DA;
+            --text: #D8CFC4;
+            --text-muted: #8E857C;
+            --text-dim: #4E4943;
+            --tier-easy: #F0864A;
+            --tier-medium: #F5C6B8;
+            --tier-hard: #E8A87C;
+            --tier-extreme: #D45D5D;
+            --tier-wow: #FFD700;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Grain */
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025; pointer-events: none; z-index: 10000;
+        }
+
+        ::selection { background: var(--coral); color: var(--bg); }
+        a { color: var(--coral); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: var(--peach); }
+
+        /* ── REDUCED MOTION ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* ── FOCUS ── */
+        :focus { outline: none; }
+        :focus-visible {
+            outline: 2px solid var(--coral);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px;
+            padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+        }
+        .skip-link {
+            position: fixed; top: -100%; left: 50%; transform: translateX(-50%);
+            z-index: 10001; padding: 0.75rem 1.5rem;
+            background: var(--coral); color: var(--bg);
+            font-weight: 700; font-size: 0.85rem; border-radius: 0 0 8px 8px;
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 0; color: var(--bg); }
+
+        /* ── NAV ── */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(12, 11, 9, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-left {
+            display: flex; align-items: center; gap: 1.5rem;
+        }
+        .nav-logo {
+            font-size: 1.1rem; font-weight: 700; color: var(--cream);
+            letter-spacing: 0.02em; text-decoration: none;
+        }
+        .nav-logo:hover { color: var(--coral); }
+        .nav-divider {
+            width: 1px; height: 1.2rem; background: var(--border);
+        }
+        .nav-title {
+            font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+            letter-spacing: 0.1em; text-transform: uppercase;
+        }
+        .nav-right {
+            display: flex; align-items: center; gap: 1.5rem;
+        }
+        .nav-xp {
+            display: flex; align-items: center; gap: 0.6rem;
+            font-size: 0.75rem; font-weight: 600; color: var(--cream);
+        }
+        .nav-xp-icon {
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--coral); display: flex; align-items: center; justify-content: center;
+            font-size: 0.6rem; font-weight: 800; color: var(--bg);
+        }
+        .nav-progress-wrap {
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .nav-progress-bar {
+            width: 120px; height: 6px; background: var(--surface);
+            border-radius: 3px; overflow: hidden; border: 1px solid var(--border);
+        }
+        .nav-progress-fill {
+            height: 100%; border-radius: 3px;
+            background: linear-gradient(90deg, var(--coral), var(--peach));
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-progress-label {
+            font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .nav-reset {
+            background: none; border: 1px solid var(--border); border-radius: 6px;
+            color: var(--text-muted); font-size: 0.65rem; font-weight: 600;
+            padding: 0.3rem 0.6rem; cursor: pointer; font-family: inherit;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-reset:hover { color: var(--tier-extreme); border-color: var(--tier-extreme); }
+        .nav-save-group {
+            display: flex; gap: 0.35rem;
+        }
+        .nav-save-btn {
+            background: none; border: 1px solid var(--border); border-radius: 6px;
+            color: var(--text-muted); font-size: 0.65rem; font-weight: 600;
+            padding: 0.3rem 0.6rem; cursor: pointer; font-family: inherit;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-save-btn:hover { color: var(--coral); border-color: var(--coral); }
+        .nav-share-btn {
+            background: var(--coral-glow); border: 1px solid var(--coral-dim); border-radius: 6px;
+            color: var(--coral); font-size: 0.65rem; font-weight: 600;
+            padding: 0.3rem 0.6rem; cursor: pointer; font-family: inherit;
+            transition: opacity 0.3s;
+        }
+        .nav-share-btn:hover { opacity: 0.8; }
+
+        /* ── HERO ── */
+        .hero {
+            padding: clamp(6rem, 12vw, 10rem) 2rem clamp(3rem, 6vw, 5rem);
+            text-align: center; max-width: 720px; margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block; padding: 0.35rem 1rem;
+            background: var(--coral-glow); border: 1px solid var(--coral-dim);
+            border-radius: 100px; font-size: 0.7rem; font-weight: 700;
+            color: var(--coral); letter-spacing: 0.15em; text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0; animation: fadeIn 0.8s ease 0.2s forwards;
+        }
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800;
+            color: var(--cream); line-height: 1.1; letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            opacity: 0; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        }
+        .hero h1 .accent {
+            color: var(--coral);
+            background: linear-gradient(90deg, var(--coral), var(--peach), #FFE066);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: clamp(0.9rem, 1.8vw, 1.05rem); color: var(--text-muted);
+            font-weight: 400; max-width: 520px; margin: 0 auto 2rem;
+            opacity: 0; animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+        }
+        .hero-stats {
+            display: flex; justify-content: center; gap: 2.5rem;
+            opacity: 0; animation: fadeIn 0.8s ease 0.6s forwards;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat-value {
+            font-size: 1.6rem; font-weight: 800; color: var(--cream);
+        }
+        .hero-stat-label {
+            font-size: 0.65rem; font-weight: 600; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.12em;
+        }
+
+        /* ── TIER SECTION ── */
+        .tier-section {
+            padding: 0 2rem;
+            max-width: 760px; margin: 0 auto;
+            margin-bottom: clamp(2rem, 4vw, 4rem);
+            content-visibility: auto;
+            contain-intrinsic-size: auto 600px;
+        }
+        .tier-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 2rem; padding: 1.25rem 1.5rem;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; position: relative; overflow: hidden;
+        }
+        .tier-header::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 4px;
+        }
+        .tier-header[data-tier="easy"]::before { background: var(--tier-easy); }
+        .tier-header[data-tier="medium"]::before { background: var(--tier-medium); }
+        .tier-header[data-tier="hard"]::before { background: var(--tier-hard); }
+        .tier-header[data-tier="extreme"]::before { background: var(--tier-extreme); }
+        .tier-header[data-tier="wow"]::before { background: var(--tier-wow); }
+
+        .tier-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .tier-header[data-tier="easy"] .tier-icon { background: rgba(240, 134, 74, 0.15); }
+        .tier-header[data-tier="medium"] .tier-icon { background: rgba(245, 198, 184, 0.15); }
+        .tier-header[data-tier="hard"] .tier-icon { background: rgba(232, 168, 124, 0.15); }
+        .tier-header[data-tier="extreme"] .tier-icon { background: rgba(212, 93, 93, 0.15); }
+        .tier-header[data-tier="wow"] .tier-icon { background: rgba(255, 215, 0, 0.15); }
+
+        .tier-info { flex: 1; }
+        .tier-name {
+            font-size: 1rem; font-weight: 700; color: var(--cream);
+            margin: 0;
+        }
+        .tier-desc {
+            font-size: 0.75rem; color: var(--text-muted); font-weight: 400;
+        }
+        .tier-badge {
+            padding: 0.25rem 0.75rem; border-radius: 100px;
+            font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .tier-header[data-tier="easy"] .tier-badge { background: rgba(240, 134, 74, 0.15); color: var(--tier-easy); }
+        .tier-header[data-tier="medium"] .tier-badge { background: rgba(245, 198, 184, 0.15); color: var(--tier-medium); }
+        .tier-header[data-tier="hard"] .tier-badge { background: rgba(232, 168, 124, 0.15); color: var(--tier-hard); }
+        .tier-header[data-tier="extreme"] .tier-badge { background: rgba(212, 93, 93, 0.15); color: var(--tier-extreme); }
+        .tier-header[data-tier="wow"] .tier-badge { background: rgba(255, 215, 0, 0.15); color: var(--tier-wow); }
+
+        .tier-progress-text {
+            font-size: 0.7rem; font-weight: 600; color: var(--text-muted);
+            margin-left: auto; white-space: nowrap;
+        }
+
+        .tier-locked-overlay {
+            position: relative;
+        }
+        .tier-locked-overlay.is-locked {
+            opacity: 0.4; pointer-events: none;
+        }
+        .tier-locked-overlay.is-locked .tier-header {
+            opacity: 0.6;
+        }
+        .tier-lock-msg {
+            text-align: center; padding: 1.5rem;
+            font-size: 0.8rem; color: var(--text-muted); font-weight: 500;
+            display: none;
+        }
+        .tier-locked-overlay.is-locked .tier-lock-msg {
+            display: block; pointer-events: auto; opacity: 1;
+        }
+
+        /* ── QUEST PATH LINE ── */
+        .quest-path {
+            position: relative; padding-left: 2.5rem;
+        }
+        .quest-path::before {
+            content: ''; position: absolute;
+            left: 15px; top: 0; bottom: 0;
+            width: 2px; background: var(--border);
+        }
+
+        /* ── STAGE CARD ── */
+        .stage-card {
+            position: relative; margin-bottom: 1.25rem;
+        }
+        .stage-node {
+            position: absolute; left: -2.5rem; top: 1.2rem;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: var(--surface); border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.65rem; font-weight: 700; color: var(--text-muted);
+            z-index: 2; transition: border-color 0.3s, background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+        .stage-card.is-active .stage-node {
+            border-color: var(--coral);
+            box-shadow: 0 0 12px var(--coral-glow);
+        }
+        .stage-card.is-completed .stage-node {
+            background: var(--coral); border-color: var(--coral);
+            color: var(--bg);
+        }
+        .stage-card.is-locked .stage-node {
+            opacity: 0.4;
+        }
+
+        .stage-node-check {
+            display: none;
+        }
+        .stage-card.is-completed .stage-node-num { display: none; }
+        .stage-card.is-completed .stage-node-check { display: block; }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(240, 134, 74, 0.3); }
+            70% { box-shadow: 0 0 0 8px rgba(240, 134, 74, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(240, 134, 74, 0); }
+        }
+        .stage-card.is-active .stage-node {
+            animation: pulse-ring 2s ease-in-out infinite;
+        }
+
+        .stage-toggle {
+            width: 100%; text-align: left; cursor: pointer;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.25rem;
+            font-family: inherit; color: var(--text); font-size: 0.85rem;
+            display: flex; align-items: center; gap: 0.75rem;
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .stage-toggle:hover {
+            background: var(--surface-hover); border-color: var(--coral-dim);
+            transform: translateX(2px);
+        }
+        .stage-toggle:active {
+            transform: translateX(0) scale(0.99);
+        }
+        .stage-card.is-active .stage-toggle {
+            border-color: var(--coral-dim);
+        }
+        .stage-card.is-locked .stage-toggle {
+            opacity: 0.4; cursor: not-allowed;
+        }
+        .stage-card.is-locked .stage-toggle:hover {
+            background: var(--surface); border-color: var(--border);
+        }
+
+        .stage-num {
+            font-size: 0.65rem; font-weight: 700; color: var(--text-muted);
+            min-width: 2rem;
+        }
+        .stage-title {
+            font-weight: 600; color: var(--cream); flex: 1;
+        }
+        .stage-card.is-completed .stage-title {
+            color: var(--text-muted);
+        }
+        .stage-xp {
+            font-size: 0.65rem; font-weight: 700; color: var(--coral);
+            padding: 0.15rem 0.5rem; background: var(--coral-glow);
+            border-radius: 100px; white-space: nowrap;
+        }
+        .stage-chevron {
+            width: 16px; height: 16px; color: var(--text-muted);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+        }
+        .stage-card.is-open .stage-chevron {
+            transform: rotate(180deg);
+        }
+
+        .stage-body {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .stage-card.is-open .stage-body {
+            grid-template-rows: 1fr;
+        }
+        .stage-body > .stage-body-inner {
+            overflow: hidden;
+        }
+        .stage-body-inner {
+            padding: 1.25rem;
+            background: var(--bg-alt);
+            border: 1px solid var(--border); border-top: none;
+            border-radius: 0 0 12px 12px;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+                        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+        }
+        .stage-card.is-open .stage-body-inner {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* What you build */
+        .stage-desc {
+            font-size: 0.8rem; color: var(--text); margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        .stage-stack {
+            display: inline-block; padding: 0.2rem 0.6rem;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 100px; font-size: 0.65rem; font-weight: 600;
+            color: var(--text-muted); margin-bottom: 1rem;
+        }
+
+        /* Vibe Principle callout */
+        .vibe-principle {
+            padding: 0.85rem 1rem; margin-bottom: 1rem;
+            background: var(--coral-glow);
+            border-left: 3px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+        }
+        .vibe-principle-label {
+            font-size: 0.6rem; font-weight: 700; color: var(--coral);
+            text-transform: uppercase; letter-spacing: 0.12em;
+            margin-bottom: 0.25rem;
+        }
+        .vibe-principle-text {
+            font-size: 0.8rem; color: var(--cream); font-weight: 500;
+            line-height: 1.5;
+        }
+
+        /* Quests */
+        .quests-label {
+            font-size: 0.65rem; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.12em;
+            margin-bottom: 0.6rem;
+        }
+        .quest-list {
+            list-style: none; margin-bottom: 1rem;
+        }
+        .quest-item {
+            display: flex; align-items: flex-start; gap: 0;
+            padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+        }
+        .quest-item:last-child { border-bottom: none; }
+
+        .quest-label {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            cursor: pointer; flex: 1;
+        }
+        .quest-check {
+            appearance: none; -webkit-appearance: none;
+            width: 20px; height: 20px; min-width: 20px; border-radius: 5px;
+            border: 2px solid var(--border); background: var(--surface);
+            cursor: pointer; position: relative; margin-top: 1px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .quest-check:checked {
+            background: var(--coral); border-color: var(--coral);
+        }
+        .quest-check:checked::after {
+            content: '✓'; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: var(--bg); font-size: 0.7rem; font-weight: 700;
+        }
+        .quest-check:focus-visible {
+            outline: 2px solid var(--coral); outline-offset: 2px;
+        }
+
+        .quest-text {
+            font-size: 0.8rem; color: var(--text); line-height: 1.5;
+        }
+        .quest-item.is-done .quest-text {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            text-decoration-thickness: 2.5px;
+            text-decoration-color: var(--coral);
+            text-decoration-skip-ink: none;
+        }
+        .quest-xp {
+            font-size: 0.6rem; font-weight: 700; color: var(--coral);
+            white-space: nowrap; margin-top: 2px;
+        }
+
+        /* Hints */
+        .hints-section {
+            margin-top: 0.5rem;
+        }
+        .hint-toggle {
+            background: none; border: 1px dashed var(--border);
+            border-radius: 8px; padding: 0.5rem 0.85rem;
+            color: var(--text-muted); font-size: 0.75rem; font-weight: 600;
+            cursor: pointer; font-family: inherit; width: 100%;
+            text-align: left; transition: color 0.3s, border-color 0.3s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .hint-toggle:hover {
+            color: var(--cream); border-color: var(--text-muted);
+            transform: translateX(2px);
+        }
+        .hint-toggle-icon {
+            font-size: 0.85rem;
+        }
+        .hint-content {
+            font-size: 0.78rem; color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .hint-content p {
+            margin-bottom: 0.5rem;
+        }
+        .hint-content p:last-child { margin-bottom: 0; }
+
+        /* ── FOOTER ── */
+        .footer {
+            text-align: center; padding: 3rem 2rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        .footer p {
+            font-size: 0.75rem; color: var(--text-muted);
+        }
+        .footer a { color: var(--coral); }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scroll-triggered reveals */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered stage card entrances */
+        .stage-card.reveal {
+            transition-delay: calc(var(--stagger, 0) * 80ms);
+        }
+
+        /* Checkbox tick pop */
+        @keyframes checkPop {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+        .quest-check:checked {
+            animation: checkPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Stage node completion burst */
+        @keyframes nodeCelebrate {
+            0% { box-shadow: 0 0 0 0 rgba(240, 134, 74, 0.5); }
+            50% { box-shadow: 0 0 0 12px rgba(240, 134, 74, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(240, 134, 74, 0); }
+        }
+        .stage-card.just-completed .stage-node {
+            animation: nodeCelebrate 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Progress bar glow pulse on XP gain */
+        @keyframes progressGlow {
+            0% { box-shadow: 0 0 0 0 rgba(240, 134, 74, 0.4); }
+            50% { box-shadow: 0 0 8px 2px rgba(240, 134, 74, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(240, 134, 74, 0); }
+        }
+        .nav-progress-bar.glow {
+            animation: progressGlow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* XP counter bump */
+        @keyframes xpBump {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        .nav-xp.bump {
+            animation: xpBump 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Hint content smooth reveal (replaces display:none toggle) */
+        .hint-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0;
+            border: 1px solid transparent;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+        .hint-content > .hint-content-inner {
+            overflow: hidden;
+        }
+        .hint-content.is-visible {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            padding: 0.75rem 0.85rem;
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            background: var(--surface);
+        }
+
+        /* Tier header glow sweep on unlock */
+        @keyframes tierGlow {
+            0% { opacity: 0; left: -100%; }
+            50% { opacity: 1; }
+            100% { opacity: 0; left: 100%; }
+        }
+        .tier-header.just-unlocked::after {
+            content: '';
+            position: absolute; top: 0; bottom: 0;
+            width: 60%; left: -100%;
+            background: linear-gradient(90deg, transparent, rgba(240, 134, 74, 0.08), transparent);
+            animation: tierGlow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            pointer-events: none;
+        }
+
+        /* ── XP POPUP ── */
+        .xp-popup {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: var(--surface); border: 2px solid var(--coral);
+            border-radius: 16px; padding: 2rem 3rem;
+            text-align: center; z-index: 2000;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .xp-popup.is-visible {
+            opacity: 1; pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .xp-popup-title {
+            font-size: 1.5rem; font-weight: 800; color: var(--cream);
+            margin-bottom: 0.5rem;
+        }
+        .xp-popup-xp {
+            font-size: 1.1rem; font-weight: 700; color: var(--coral);
+            margin-bottom: 0.25rem;
+        }
+        .xp-popup-msg {
+            font-size: 0.8rem; color: var(--text-muted);
+        }
+        .xp-popup-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 1999; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .xp-popup-overlay.is-visible {
+            opacity: 1; pointer-events: auto;
+        }
+
+        /* ── TIER UNLOCK POPUP ── */
+        .tier-unlock-title {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.15em; margin-bottom: 0.5rem;
+        }
+        .tier-unlock-name {
+            font-size: 1.8rem; font-weight: 800; color: var(--cream);
+            margin-bottom: 0.25rem;
+        }
+
+        /* ── RESET CONFIRM ── */
+        .reset-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 3000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .reset-overlay.is-visible { opacity: 1; pointer-events: auto; }
+        .reset-dialog {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem; max-width: 360px; text-align: center;
+        }
+        .reset-dialog h3 {
+            font-size: 1.1rem; font-weight: 700; color: var(--cream); margin-bottom: 0.5rem;
+        }
+        .reset-dialog p {
+            font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;
+        }
+        .reset-btns { display: flex; gap: 0.75rem; justify-content: center; }
+        .reset-btn {
+            padding: 0.5rem 1.25rem; border-radius: 100px;
+            font-size: 0.8rem; font-weight: 600; cursor: pointer;
+            font-family: inherit; border: none; transition: background-color 0.3s, color 0.3s;
+        }
+        .reset-btn-cancel {
+            background: var(--bg-alt); color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .reset-btn-cancel:hover { color: var(--cream); }
+        .reset-btn-confirm {
+            background: var(--tier-extreme); color: var(--bg);
+        }
+        .reset-btn-confirm:hover { background: #C04040; }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+            .nav { padding: 0.75rem 1.25rem; }
+            .nav-progress-bar { width: 80px; }
+            .hero { padding: clamp(5rem, 10vw, 8rem) 1.5rem clamp(2rem, 4vw, 3rem); }
+            .tier-section { padding: 0 1.25rem; }
+        }
+        @media (max-width: 600px) {
+            .nav { flex-wrap: wrap; gap: 0.5rem; }
+            .nav-left { width: 100%; justify-content: space-between; }
+            .nav-right { width: 100%; justify-content: space-between; flex-wrap: wrap; }
+            .nav-divider { display: none; }
+            .nav-title { display: none; }
+            .nav-save-group { gap: 0.25rem; }
+            .hero { padding: 5.5rem 1.25rem 2rem; }
+            .hero h1 { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+            .hero-stats { gap: 1.5rem; }
+            .tier-section { padding: 0 0.75rem; }
+            .tier-header { padding: 1rem; gap: 0.75rem; }
+            .quest-path { padding-left: 2rem; }
+            .quest-path::before { left: 11px; }
+            .stage-node { left: -2rem; width: 24px; height: 24px; font-size: 0.55rem; }
+            .stage-toggle { padding: 0.85rem 1rem; font-size: 0.8rem; }
+            .stage-body-inner { padding: 1rem; }
+            .stage-xp { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- Nav -->
+    <nav class="nav" role="navigation" aria-label="Main">
+        <div class="nav-left">
+            <a href="/" class="nav-logo">VS</a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <span class="nav-title">Vibe Code Quest</span>
+        </div>
+        <div class="nav-right">
+            <div class="nav-xp">
+                <div class="nav-xp-icon" aria-hidden="true">⚡</div>
+                <span id="nav-xp-count">0 XP</span>
+            </div>
+            <div class="nav-progress-wrap" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="45" aria-label="Overall progress" id="nav-progressbar">
+                <div class="nav-progress-bar">
+                    <div class="nav-progress-fill" id="nav-progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="nav-progress-label" id="nav-progress-label">0 / 45</span>
+            </div>
+            <div class="nav-save-group">
+                <button class="nav-share-btn" id="share-btn" aria-label="Copy progress link">Share</button>
+                <button class="nav-save-btn" id="save-btn" aria-label="Download progress file">Save</button>
+                <button class="nav-save-btn" id="load-btn" aria-label="Load progress file">Load</button>
+            </div>
+            <button class="nav-reset" id="reset-btn" aria-label="Reset all progress">Reset</button>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">Interactive Learning Path</div>
+            <h1>Vibe Code<br><span class="accent">Quest</span></h1>
+            <p>45 real projects. 5 difficulty tiers. Learn to build anything with AI-assisted vibe coding — one quest at a time.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">45</div>
+                    <div class="hero-stat-label">Projects</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">5</div>
+                    <div class="hero-stat-label">Tiers</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value" id="hero-xp-total">0</div>
+                    <div class="hero-stat-label">Your XP</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tiers rendered by JS -->
+        <div id="quest-container"></div>
+    </main>
+
+    <footer class="footer">
+        <p>Built with <span aria-hidden="true">❤️</span><span class="sr-only">love</span> by <a href="/">Vardan</a> — Vibe Code Quest</p>
+    </footer>
+
+    <!-- XP Popup -->
+    <div class="xp-popup-overlay" id="xp-overlay"></div>
+    <div class="xp-popup" id="xp-popup" role="alert" aria-live="polite">
+        <div class="xp-popup-title" id="xp-popup-title">Stage Complete!</div>
+        <div class="xp-popup-xp" id="xp-popup-xp">+50 XP</div>
+        <div class="xp-popup-msg" id="xp-popup-msg">Keep going!</div>
+    </div>
+
+    <!-- Hidden file input for loading saves -->
+    <input type="file" id="load-file-input" accept=".json" style="display:none">
+
+    <!-- Completion Sound -->
+    <audio id="sherma-audio" src="sherma.mp3" preload="auto"></audio>
+
+    <!-- Reset Confirm -->
+    <div class="reset-overlay" id="reset-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Reset progress confirmation">
+        <div class="reset-dialog">
+            <h3>Reset all progress?</h3>
+            <p>This will clear all your completed quests, XP, and unlocked tiers. This cannot be undone.</p>
+            <div class="reset-btns">
+                <button class="reset-btn reset-btn-cancel" id="reset-cancel">Cancel</button>
+                <button class="reset-btn reset-btn-confirm" id="reset-confirm">Reset Everything</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // ── UTILITIES ──
+        var _escMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+        function esc(str) {
+            return String(str).replace(/[&<>"']/g, function(c) { return _escMap[c]; });
+        }
+
+        // ── AUDIO ──
+        var _shermaAudio = document.getElementById('sherma-audio');
+        function playSherma() {
+            try {
+                _shermaAudio.currentTime = 0;
+                _shermaAudio.play();
+            } catch(e) { /* autoplay may be blocked */ }
+        }
+
+        // ── DATA: 45 STAGES ──
+        const TIERS = [
+            {
+                id: 'easy',
+                name: 'Easy',
+                icon: '\u{1F331}',
+                desc: 'Single-file & CLI apps \u2014 Python',
+                badge: 'Beginner',
+                color: '#F0864A'
+            },
+            {
+                id: 'medium',
+                name: 'Medium',
+                icon: '\u{1F525}',
+                desc: 'Web apps \u2014 HTML/CSS/JS (frontend-only)',
+                badge: 'Intermediate',
+                color: '#F5C6B8'
+            },
+            {
+                id: 'hard',
+                name: 'Hard',
+                icon: '\u26A1',
+                desc: 'Full-stack apps with backend & database',
+                badge: 'Advanced',
+                color: '#E8A87C'
+            },
+            {
+                id: 'extreme',
+                name: 'Extreme',
+                icon: '\u{1F48E}',
+                desc: 'Real-time, multi-platform, advanced architecture',
+                badge: 'Expert',
+                color: '#D45D5D'
+            },
+            {
+                id: 'wow',
+                name: 'WOW',
+                icon: '\u{1F3C6}',
+                desc: 'Ship something impressive to the world',
+                badge: 'Master',
+                color: '#FFD700'
+            }
+        ];
+
+        const STAGES = [
+            // ── EASY (1-10) ──
+            {
+                id: 1, tier: 'easy',
+                title: 'Calculator App',
+                desc: 'Build a CLI calculator with history, memory functions (M+, M-, MR), and support for complex expressions. Handle edge cases like division by zero gracefully.',
+                stack: 'Python',
+                quests: [
+                    'Create a working calculator that handles +, -, *, / operations',
+                    'Add memory functions (M+, M-, MR, MC) and calculation history',
+                    'Handle errors gracefully (division by zero, invalid input)'
+                ],
+                vibe: 'Create a CLAUDE.md before you start — tell the AI what stack you\'re using, what the file structure should look like, and what the final product should do.',
+                hints: [
+                    'Start your prompt with: "Build a Python CLI calculator with history and memory functions. Single file, clean error handling."',
+                    'If the AI gives you too much at once, ask: "Break this into steps — give me the basic arithmetic first, then we\'ll add memory."'
+                ]
+            },
+            {
+                id: 2, tier: 'easy',
+                title: 'Password Generator',
+                desc: 'Build a configurable command-line password generator with length options, character set toggles (uppercase, lowercase, digits, symbols), and a visual strength meter.',
+                stack: 'Python',
+                quests: [
+                    'Generate random passwords with configurable length and character sets',
+                    'Add a visual strength meter that rates passwords (weak/medium/strong)',
+                    'Add clipboard copy and batch generation (generate N passwords at once)'
+                ],
+                vibe: 'Ask for a file tree and spec first, not code. Get the AI to plan the architecture before writing a single line.',
+                hints: [
+                    'Prompt: "Plan a Python CLI password generator — show me the file structure and main functions before writing code."',
+                    'For the strength meter, ask: "How do security experts calculate password entropy? Implement that as a strength score."'
+                ]
+            },
+            {
+                id: 3, tier: 'easy',
+                title: 'Unit Converter',
+                desc: 'Build a multi-category unit converter supporting temperature (C/F/K), weight (kg/lb/oz), length (m/ft/in/cm), and volume. Clean menu-driven interface.',
+                stack: 'Python',
+                quests: [
+                    'Convert between at least 3 categories (temp, weight, length)',
+                    'Build a clean menu system for selecting category and units',
+                    'Add conversion history and the ability to chain conversions'
+                ],
+                vibe: 'When the AI gives you code, read every line. If you don\'t understand something, ask: "Explain this function in plain English."',
+                hints: [
+                    'Start with: "Build a Python unit converter with a menu-driven CLI. Support temperature, weight, and length conversions."',
+                    'Use a dictionary to store conversion factors — ask the AI to explain why this is better than if/else chains.'
+                ]
+            },
+            {
+                id: 4, tier: 'easy',
+                title: 'Markdown Notes CLI',
+                desc: 'Build a terminal note-taking app that creates, lists, searches, and deletes notes stored as .md files in a local directory. Add tag support and full-text search.',
+                stack: 'Python',
+                quests: [
+                    'Create, list, and delete markdown notes stored as .md files',
+                    'Add full-text search across all notes',
+                    'Add tag support (#tag in notes) and filter notes by tag'
+                ],
+                vibe: 'Run the app after every change. Never let two AI prompts pass without testing what was generated.',
+                hints: [
+                    'Prompt: "Build a Python CLI for managing markdown notes in a ~/notes directory. Support create, list, search, delete."',
+                    'For tags, ask: "Parse hashtags from note content and add a --tag flag to filter notes by tag."'
+                ]
+            },
+            {
+                id: 5, tier: 'easy',
+                title: 'File Organizer',
+                desc: 'Build a script that auto-sorts your Downloads folder by file type (images, documents, videos, code) and optionally by date. Add dry-run mode and undo.',
+                stack: 'Python',
+                quests: [
+                    'Sort files into folders by extension (images, docs, videos, etc.)',
+                    'Add a dry-run mode that shows what would happen without moving files',
+                    'Add date-based subfolder organization (2024/January/)'
+                ],
+                vibe: 'Always ask the AI to add a --dry-run flag first. Test with fake files before running on your real downloads.',
+                hints: [
+                    'Prompt: "Build a Python file organizer for my Downloads folder. Sort by file type into subfolders. Include --dry-run flag."',
+                    'Use pathlib, not os.path — ask the AI: "Rewrite this using pathlib for modern Python file handling."'
+                ]
+            },
+            {
+                id: 6, tier: 'easy',
+                title: 'CSV Data Cleaner',
+                desc: 'Build a tool that imports CSV files, cleans messy data (duplicates, missing values, formatting), filters rows, and exports clean results.',
+                stack: 'Python',
+                quests: [
+                    'Import a CSV, detect and report data quality issues',
+                    'Clean duplicates, handle missing values, standardize formats',
+                    'Add column filtering, row filtering, and export to clean CSV'
+                ],
+                vibe: 'Give the AI a sample of your actual messy data. The more context you provide, the better the output.',
+                hints: [
+                    'Prompt: "Build a Python CSV cleaner. Load CSV, show stats (rows, columns, nulls, duplicates), then clean and export."',
+                    'Create a sample messy CSV first and include it in your prompt for the AI to work with.'
+                ]
+            },
+            {
+                id: 7, tier: 'easy',
+                title: 'Quiz Game',
+                desc: 'Build an interactive terminal trivia game with multiple categories, difficulty levels, score tracking, and a high-score leaderboard stored to file.',
+                stack: 'Python',
+                quests: [
+                    'Create a quiz with at least 3 categories and 10+ questions each',
+                    'Add scoring, timer per question, and difficulty levels',
+                    'Add a persistent high-score leaderboard saved to a JSON file'
+                ],
+                vibe: 'Don\'t ask the AI to write questions. Write your own questions and ask the AI to build the game engine around them.',
+                hints: [
+                    'Prompt: "Build a Python trivia game engine. I\'ll provide the questions as JSON. Support categories, scoring, and a leaderboard."',
+                    'Store questions in a separate JSON file — ask: "Separate game logic from question data."'
+                ]
+            },
+            {
+                id: 8, tier: 'easy',
+                title: 'Expense Logger',
+                desc: 'Build a CLI expense tracker: log purchases with category and amount, view totals by category/month, and export a spending report as CSV or text.',
+                stack: 'Python',
+                quests: [
+                    'Log expenses with amount, category, date, and description',
+                    'Show totals grouped by category and by month',
+                    'Export a formatted spending report (CSV or pretty-printed text)'
+                ],
+                vibe: 'Ask the AI to show you 3 different approaches for storing data (JSON, CSV, SQLite), then pick the simplest one.',
+                hints: [
+                    'Prompt: "Build a Python CLI expense tracker. Store data in JSON. Support add, list, report commands."',
+                    'For reports, ask: "Generate a monthly spending summary grouped by category with totals and percentages."'
+                ]
+            },
+            {
+                id: 9, tier: 'easy',
+                title: 'Habit Tracker CLI',
+                desc: 'Build a daily habit tracker: check in each day, track streaks, and display a weekly summary with visual progress bars in the terminal.',
+                stack: 'Python',
+                quests: [
+                    'Define habits and check them off daily',
+                    'Track streaks (current and longest) for each habit',
+                    'Display a weekly summary with ASCII progress bars'
+                ],
+                vibe: 'If the AI generates something that works but looks ugly, say: "Now make the terminal output beautiful with colors and alignment."',
+                hints: [
+                    'Prompt: "Build a Python habit tracker CLI with daily check-ins, streak tracking, and colorful weekly summaries."',
+                    'Use the rich library for beautiful terminal output — ask: "Add rich library for colored tables and progress bars."'
+                ]
+            },
+            {
+                id: 10, tier: 'easy',
+                title: 'Personal Dashboard',
+                desc: 'Build a terminal dashboard that shows weather, your to-do list, upcoming calendar events, and a motivational quote — all in one beautiful display.',
+                stack: 'Python',
+                quests: [
+                    'Display current weather using a free API (OpenWeatherMap or similar)',
+                    'Show to-dos and calendar events from local JSON files',
+                    'Combine into a single beautiful dashboard layout with auto-refresh'
+                ],
+                vibe: 'This is your capstone Easy project. Before starting, write a CLAUDE.md that describes the entire dashboard layout and features.',
+                hints: [
+                    'Prompt: "Build a Python terminal dashboard using rich. Show: weather (wttr.in API), to-dos (from todos.json), and a random quote."',
+                    'Use the rich.layout module for multi-panel terminal layouts.'
+                ]
+            },
+
+            // ── MEDIUM (11-20) ──
+            {
+                id: 11, tier: 'medium',
+                title: 'Personal Homepage',
+                desc: 'Build a responsive portfolio website with sections for about, skills, projects, and contact. No frameworks — pure HTML, CSS, and JavaScript.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Build a complete responsive portfolio with hero, about, and projects sections',
+                    'Add smooth scroll navigation and a mobile hamburger menu',
+                    'Add CSS animations (fade-in on scroll, hover effects on cards)'
+                ],
+                vibe: 'Run the app after every single change. Open DevTools → responsive mode. Test at 320px, 768px, and 1440px.',
+                hints: [
+                    'Prompt: "Build a single-page portfolio website. Pure HTML/CSS/JS, no frameworks. Dark theme, responsive, animated."',
+                    'Ask the AI: "Use CSS custom properties for all colors so I can change the theme in one place."'
+                ]
+            },
+            {
+                id: 12, tier: 'medium',
+                title: 'Recipe Collection',
+                desc: 'Build a recipe browsing app with categories, search, filtering by ingredients or prep time, and localStorage persistence for favorites.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Display recipes as cards with image, title, time, and category',
+                    'Add search and filter by category, prep time, or ingredients',
+                    'Save favorites to localStorage and add a favorites view'
+                ],
+                vibe: 'Ask the AI to explain every file it creates in plain language. If you don\'t understand the code, you can\'t fix it when it breaks.',
+                hints: [
+                    'Prompt: "Build a recipe collection web app. Single HTML file, localStorage for favorites. Cards with search and category filter."',
+                    'Store recipe data as a JS array in the same file — keep it simple for now.'
+                ]
+            },
+            {
+                id: 13, tier: 'medium',
+                title: 'Pomodoro Timer',
+                desc: 'Build a Pomodoro timer with work/break intervals, session count tracking, customizable durations, and a history of completed sessions.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Build a working 25/5 Pomodoro timer with start, pause, and reset',
+                    'Add customizable work/break durations and auto-cycling',
+                    'Track and display session history with date and duration'
+                ],
+                vibe: 'When something breaks, copy the error message and paste it directly to the AI. Don\'t describe the error — show it.',
+                hints: [
+                    'Prompt: "Build a Pomodoro timer web app. Circular progress ring, customizable durations, session history in localStorage."',
+                    'For the circular timer, ask: "Use an SVG circle with stroke-dashoffset for the countdown animation."'
+                ]
+            },
+            {
+                id: 14, tier: 'medium',
+                title: 'To-Do App',
+                desc: 'Build a full-featured to-do app with CRUD operations, category filters, drag-and-drop reordering, due dates, and localStorage persistence.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Full CRUD: add, edit, delete, and mark tasks complete',
+                    'Add categories/tags, due dates, and priority levels with filters',
+                    'Implement drag-and-drop reordering and persist everything to localStorage'
+                ],
+                vibe: 'Don\'t ask for "a to-do app." Describe exactly what YOUR to-do app does differently. Specificity gets better results.',
+                hints: [
+                    'Prompt: "Build a to-do app with categories, due dates, priorities, drag-drop reordering. Store in localStorage. No frameworks."',
+                    'For drag-and-drop, ask: "Use the native HTML Drag and Drop API — no libraries."'
+                ]
+            },
+            {
+                id: 15, tier: 'medium',
+                title: 'Flashcard Study App',
+                desc: 'Build a spaced-repetition flashcard app. Create decks, flip cards, rate difficulty, and track progress with a simple SM-2-style algorithm.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Create and manage flashcard decks with front/back content',
+                    'Implement card flipping animation and difficulty rating (easy/medium/hard)',
+                    'Add a simple spaced repetition algorithm and progress stats per deck'
+                ],
+                vibe: 'When the AI gives you a complex algorithm, ask: "Walk me through this step by step with a concrete example."',
+                hints: [
+                    'Prompt: "Build a flashcard app with decks, card flipping, difficulty ratings, and basic spaced repetition."',
+                    'For spaced repetition, ask: "Explain the SM-2 algorithm simply, then implement a basic version."'
+                ]
+            },
+            {
+                id: 16, tier: 'medium',
+                title: 'Weather Dashboard',
+                desc: 'Build a weather dashboard that fetches real data from a free API. Show current conditions, 5-day forecast, and location search with autocomplete.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Fetch and display current weather for a location (temperature, conditions, icon)',
+                    'Add a 5-day forecast with high/low temperatures and weather icons',
+                    'Add location search and save favorite locations to localStorage'
+                ],
+                vibe: 'Never hardcode API keys in your code. Ask the AI: "Where should I store API keys safely in a frontend-only app?"',
+                hints: [
+                    'Use OpenWeatherMap free tier. Prompt: "Build a weather dashboard using OpenWeatherMap API. Show current + 5-day forecast."',
+                    'Ask: "Add loading states and error handling for when the API is slow or returns an error."'
+                ]
+            },
+            {
+                id: 17, tier: 'medium',
+                title: 'Budget Planner',
+                desc: 'Build a budget planner with income/expense tracking, visual pie/bar charts (using Canvas or SVG), and monthly breakdown reports.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Add income and expense entries with categories and amounts',
+                    'Show a visual breakdown with pie chart (Canvas or SVG) by category',
+                    'Add monthly view, running balance, and export to CSV'
+                ],
+                vibe: 'If the AI uses a chart library, ask: "Can you build this chart with plain SVG or Canvas instead? I want to understand how charts work."',
+                hints: [
+                    'Prompt: "Build a budget planner. Add income/expenses, show pie chart by category using SVG, monthly breakdown."',
+                    'For SVG charts, ask: "Build a pie chart from scratch using SVG path arcs — explain the math."'
+                ]
+            },
+            {
+                id: 18, tier: 'medium',
+                title: 'Memory Card Game',
+                desc: 'Build a card-matching memory game with flip animations, difficulty levels (grid size), a timer, move counter, and a high-score system.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Build a card grid with flip animation and match detection',
+                    'Add difficulty levels (4x4, 6x6), move counter, and timer',
+                    'Add high scores per difficulty level stored in localStorage'
+                ],
+                vibe: 'This is a game — play-test constantly! After every feature, play a full round and note what feels wrong.',
+                hints: [
+                    'Prompt: "Build a memory card matching game. CSS flip animation, multiple grid sizes, timer, and high scores."',
+                    'For card flip, ask: "Use CSS transform: rotateY(180deg) with backface-visibility: hidden."'
+                ]
+            },
+            {
+                id: 19, tier: 'medium',
+                title: 'Habit Tracker UI',
+                desc: 'Build a visual habit tracker with a GitHub-style contribution heatmap, streak tracking, weekly goals, and progress charts.',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Build a habit tracker with daily check-ins and a contribution heatmap',
+                    'Add streak tracking (current, longest) and weekly completion goals',
+                    'Add a year-at-a-glance view with color-coded intensity levels'
+                ],
+                vibe: 'Before building, sketch the UI on paper (or describe it in words to the AI). Layout-first, logic-second.',
+                hints: [
+                    'Prompt: "Build a habit tracker with a GitHub-style green contribution heatmap. Track daily habits, show streaks."',
+                    'For the heatmap, ask: "Build a grid of 52 columns × 7 rows. Color each cell based on completion count for that day."'
+                ]
+            },
+            {
+                id: 20, tier: 'medium',
+                title: 'Markdown Editor',
+                desc: 'Build a split-pane markdown editor with live preview, formatting toolbar, syntax highlighting, and export to HTML or PDF (via print).',
+                stack: 'HTML / CSS / JS',
+                quests: [
+                    'Build a split-pane editor with live markdown preview',
+                    'Add a formatting toolbar (bold, italic, headings, links, code blocks)',
+                    'Add syntax highlighting in preview and export to HTML file'
+                ],
+                vibe: 'This is your capstone Medium project. Write a full spec in your CLAUDE.md before generating any code.',
+                hints: [
+                    'Prompt: "Build a markdown editor with live split-pane preview. No libraries — parse markdown manually or use a small parser."',
+                    'For the parser, a simple regex approach works for basic markdown. Ask: "Build a minimal markdown-to-HTML parser."'
+                ]
+            },
+
+            // ── HARD (21-30) ──
+            {
+                id: 21, tier: 'hard',
+                title: 'Blog Platform',
+                desc: 'Build a blog with markdown post editing, tags, categories, an admin panel for CRUD, and a public-facing reading experience with syntax highlighting.',
+                stack: 'Next.js + SQLite',
+                quests: [
+                    'Set up Next.js with SQLite — create posts with markdown content',
+                    'Build an admin panel for creating, editing, and deleting posts',
+                    'Add tags, categories, search, and syntax highlighting for code blocks'
+                ],
+                vibe: 'Ask for a failing test first, then the implementation. TDD with AI is incredibly effective.',
+                hints: [
+                    'Prompt: "Build a blog with Next.js and SQLite. Admin panel for CRUD, markdown rendering, tags, and search."',
+                    'Ask: "Set up the database schema first with Prisma or better-sqlite3, then build the API routes."'
+                ]
+            },
+            {
+                id: 22, tier: 'hard',
+                title: 'URL Shortener',
+                desc: 'Build a URL shortener service with custom short codes, click analytics (referrer, location, time), and a dashboard showing link performance.',
+                stack: 'Node.js + PostgreSQL',
+                quests: [
+                    'Create short URLs with custom or auto-generated codes',
+                    'Track every click with timestamp, referrer, and user-agent',
+                    'Build an analytics dashboard showing clicks over time and top referrers'
+                ],
+                vibe: 'Set up CI before you write features. A GitHub Action that runs tests on every push catches what you miss.',
+                hints: [
+                    'Prompt: "Build a URL shortener with Node.js, Express, and PostgreSQL. Short code generation, redirect, and click analytics."',
+                    'Ask: "Design the database schema first — show me the tables, columns, and relationships before writing any code."'
+                ]
+            },
+            {
+                id: 23, tier: 'hard',
+                title: 'Bookmark Manager',
+                desc: 'Build a bookmark manager: save URLs with auto-fetched titles and favicons, organize with tags and folders, search, and share collections publicly.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'Save bookmarks with auto-fetched page title and favicon',
+                    'Organize with tags, folders, and full-text search',
+                    'Add shareable public collection links'
+                ],
+                vibe: 'When the AI picks a tech stack for you, ask: "Why this stack? Give me 3 alternatives and explain the trade-offs."',
+                hints: [
+                    'Prompt: "Build a bookmark manager. Auto-fetch page metadata, organize with tags/folders, full-text search."',
+                    'For metadata fetching, ask: "Use a server-side function to fetch the URL and parse the <title> and favicon."'
+                ]
+            },
+            {
+                id: 24, tier: 'hard',
+                title: 'Event RSVP App',
+                desc: 'Build an event management app: create events with details, generate shareable invite links, manage RSVPs, and send email reminders.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'Create events with title, date, location, and description',
+                    'Generate unique shareable invite links for each event',
+                    'Build RSVP management (accept/decline/maybe) with attendee list'
+                ],
+                vibe: 'Sketch the data model on paper first. Which entities exist? How do they relate? Give this to the AI as your starting point.',
+                hints: [
+                    'Prompt: "Build an event RSVP app. Create events, generate invite links, track RSVPs. Show me the data model first."',
+                    'Ask: "Design the database schema with events, invitations, and RSVPs tables — explain the relationships."'
+                ]
+            },
+            {
+                id: 25, tier: 'hard',
+                title: 'Kanban Board',
+                desc: 'Build a Kanban board (like Trello): drag-and-drop cards between columns, user accounts, real database persistence, and card labels/due dates.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'Build a multi-column Kanban board with drag-and-drop cards',
+                    'Add user authentication and personal boards',
+                    'Add card details: descriptions, labels, due dates, and checklists'
+                ],
+                vibe: 'Break this into milestones. Don\'t try to build everything at once. Ship a working drag-drop board first, then add auth.',
+                hints: [
+                    'Prompt: "Build a Kanban board app. Drag-drop cards between columns, user auth, persistent storage. Start with the board UI."',
+                    'For drag-and-drop, ask: "Use @dnd-kit or react-beautiful-dnd — which is simpler for a Kanban board?"'
+                ]
+            },
+            {
+                id: 26, tier: 'hard',
+                title: 'Expense Tracker Pro',
+                desc: 'Build a multi-user expense tracker with authentication, categories, visual charts, recurring expenses, and CSV export.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'User auth with personal expense dashboards',
+                    'Add categories, recurring expenses, and budget limits with alerts',
+                    'Build visual reports (charts) and CSV export'
+                ],
+                vibe: 'Don\'t just copy your Easy expense logger and add a database. Redesign from scratch — you\'ve leveled up since then.',
+                hints: [
+                    'Prompt: "Build a multi-user expense tracker. Auth, categories, recurring expenses, charts, CSV export."',
+                    'Ask: "What\'s the best chart library for this use case? Compare Chart.js, Recharts, and D3 for a beginner."'
+                ]
+            },
+            {
+                id: 27, tier: 'hard',
+                title: 'Contact Manager',
+                desc: 'Build a CRM-lite contact manager: full CRUD, search and filter, import/export (CSV/vCard), and email integration for quick messages.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'Full CRUD for contacts with search and filtering',
+                    'Import contacts from CSV and export to CSV/vCard',
+                    'Add notes, tags, and basic email send (via SendGrid or similar)'
+                ],
+                vibe: 'Write tests for your import/export logic. File parsing is where bugs love to hide.',
+                hints: [
+                    'Prompt: "Build a contact manager with CRUD, CSV import/export, tags, search, and email integration."',
+                    'Ask: "Parse vCard format — show me the spec and build an importer."'
+                ]
+            },
+            {
+                id: 28, tier: 'hard',
+                title: 'Poll / Survey App',
+                desc: 'Build a poll creation tool: multiple question types, shareable vote links, real-time results display, and response analytics.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'Create polls with multiple question types (single, multi, text)',
+                    'Generate shareable vote links with real-time results display',
+                    'Add response analytics: charts, percentages, time-based trends'
+                ],
+                vibe: 'Think about edge cases: What if someone votes twice? What if 1000 people vote at once? Ask the AI about these.',
+                hints: [
+                    'Prompt: "Build a poll/survey app. Create polls, share links, vote, see real-time results with charts."',
+                    'Ask: "How do I prevent duplicate votes without requiring login? Compare fingerprinting vs. cookie-based approaches."'
+                ]
+            },
+            {
+                id: 29, tier: 'hard',
+                title: 'Recipe Sharing Site',
+                desc: 'Build a recipe platform: user submissions with image uploads, star ratings, comments, full-text search, and a beautiful recipe detail view.',
+                stack: 'Full-stack (your choice)',
+                quests: [
+                    'User-submitted recipes with ingredients, steps, and image uploads',
+                    'Add star ratings, comments, and recipe search',
+                    'Build a beautiful recipe detail page with scaling (adjust servings)'
+                ],
+                vibe: 'Image uploads are a common source of bugs. Ask the AI to handle: file size limits, format validation, and responsive images.',
+                hints: [
+                    'Prompt: "Build a recipe sharing site. User submissions, image uploads, ratings, comments, search."',
+                    'Ask: "Where should I store uploaded images? Compare Cloudinary, S3, and local storage for a small project."'
+                ]
+            },
+            {
+                id: 30, tier: 'hard',
+                title: 'Job Application Tracker',
+                desc: 'Build a job search tracker: pipeline stages (applied → interview → offer), notes, reminders, analytics, and deploy it to a real server.',
+                stack: 'Full-stack + Deploy',
+                quests: [
+                    'Build a pipeline board with drag-and-drop stages (applied, interview, offer, rejected)',
+                    'Add notes, reminders, and company details per application',
+                    'Deploy to a real server (Vercel, Railway, or Fly.io) and share the URL'
+                ],
+                vibe: 'This is your capstone Hard project. Deploy it for real. A project that lives on the internet is worth 10 local demos.',
+                hints: [
+                    'Prompt: "Build a job application tracker with a Kanban-style pipeline board. Full-stack with deploy."',
+                    'For deployment, ask: "What\'s the simplest way to deploy a full-stack app for free? Compare Vercel, Railway, and Fly.io."'
+                ]
+            },
+
+            // ── EXTREME (31-40) ──
+            {
+                id: 31, tier: 'extreme',
+                title: 'Real-Time Chat App',
+                desc: 'Build a chat app with rooms, typing indicators, message history, online user lists, and WebSocket-based real-time communication.',
+                stack: 'WebSockets + Full-stack',
+                quests: [
+                    'Build a real-time chat with rooms and message history',
+                    'Add typing indicators and online user presence',
+                    'Add direct messages, emoji reactions, and message editing'
+                ],
+                vibe: 'Rebuild the WebSocket connection logic by hand after the AI shows you the pattern. Real-time is a skill you need to own.',
+                hints: [
+                    'Prompt: "Build a real-time chat app with Socket.io. Rooms, typing indicators, message history, online users."',
+                    'Ask: "Explain the WebSocket lifecycle — connect, disconnect, reconnect — and implement robust error handling."'
+                ]
+            },
+            {
+                id: 32, tier: 'extreme',
+                title: 'Collaborative Whiteboard',
+                desc: 'Build a real-time collaborative drawing board: multiple cursors, shapes, freehand drawing, colors, and export to PNG.',
+                stack: 'Canvas + WebSockets',
+                quests: [
+                    'Build a drawing canvas with freehand, shapes, and color picker',
+                    'Add real-time collaboration — see other users\' cursors and strokes',
+                    'Add undo/redo, eraser, and export to PNG'
+                ],
+                vibe: 'When the codebase gets complex, ask the AI to draw an architecture diagram (in ASCII or Mermaid) so you can see the big picture.',
+                hints: [
+                    'Prompt: "Build a collaborative whiteboard using Canvas and WebSockets. Multi-user drawing with cursors."',
+                    'Ask: "How do I sync drawing operations efficiently? Explain operation-based vs. state-based sync."'
+                ]
+            },
+            {
+                id: 33, tier: 'extreme',
+                title: 'Browser Extension',
+                desc: 'Build a Chrome extension: either a tab manager (group, search, save sessions) or a reading highlighter (highlight text, save annotations).',
+                stack: 'Chrome Extension API',
+                quests: [
+                    'Set up the extension manifest, popup, and content script',
+                    'Build the core feature (tab management or text highlighting)',
+                    'Add persistent storage (chrome.storage) and keyboard shortcuts'
+                ],
+                vibe: 'Browser extensions have a unique architecture. Ask the AI to explain the manifest.json, popup, content script, and background script before coding.',
+                hints: [
+                    'Prompt: "Build a Chrome extension for [tab management/text highlighting]. Explain the architecture first."',
+                    'Ask: "Show me the manifest.json and explain each permission — I want to understand what my extension has access to."'
+                ]
+            },
+            {
+                id: 34, tier: 'extreme',
+                title: 'Desktop Notes App',
+                desc: 'Build a cross-platform desktop note-taking app with rich text editing, folder organization, search, and system tray integration.',
+                stack: 'Electron or Tauri',
+                quests: [
+                    'Build a desktop app with a note editor and folder/tag organization',
+                    'Add rich text editing, search, and keyboard shortcuts',
+                    'Add system tray integration and quick-capture hotkey'
+                ],
+                vibe: 'Compare Electron and Tauri before choosing. Ask the AI: "What are the trade-offs? Which is better for a beginner?"',
+                hints: [
+                    'Prompt: "Build a desktop notes app with [Electron/Tauri]. Rich text editor, folders, search, system tray."',
+                    'Ask: "Should I use Electron or Tauri for this project? Compare bundle size, performance, and learning curve."'
+                ]
+            },
+            {
+                id: 35, tier: 'extreme',
+                title: 'Idle / Clicker Game',
+                desc: 'Build an idle game with clicking, upgrades, prestige (reset for multipliers), offline progress calculation, and save state persistence.',
+                stack: 'JavaScript Game',
+                quests: [
+                    'Build the core click loop with currency and basic upgrades',
+                    'Add prestige system (reset for permanent multipliers) and achievements',
+                    'Add offline progress calculation and auto-save'
+                ],
+                vibe: 'Game balance is harder than game code. Play-test your own game for 30 minutes straight and take notes on what feels right.',
+                hints: [
+                    'Prompt: "Build an idle/clicker game with upgrades, prestige, offline progress, and achievements."',
+                    'Ask: "How do idle games calculate offline progress? Explain the math for time-based resource accumulation."'
+                ]
+            },
+            {
+                id: 36, tier: 'extreme',
+                title: 'Multiplayer Trivia',
+                desc: 'Build a live multiplayer trivia game: create rooms, join via code, timed rounds, real-time scoring, and a post-game leaderboard.',
+                stack: 'Full-stack + WebSockets',
+                quests: [
+                    'Build game rooms with join codes and a lobby system',
+                    'Implement timed question rounds with real-time answer submission',
+                    'Add live scoring, streak bonuses, and a post-game leaderboard'
+                ],
+                vibe: 'Test with 2 browser windows side by side. Real-time multiplayer bugs only show up when you actually have multiple clients.',
+                hints: [
+                    'Prompt: "Build a multiplayer trivia game with rooms, real-time scoring, and a leaderboard. Use Socket.io."',
+                    'Ask: "How do I synchronize game state across clients? Explain server-authoritative game logic."'
+                ]
+            },
+            {
+                id: 37, tier: 'extreme',
+                title: 'E-Commerce Store',
+                desc: 'Build a complete store: product catalog, shopping cart, Stripe checkout, order confirmation, and an admin panel for managing products.',
+                stack: 'Full-stack + Stripe',
+                quests: [
+                    'Build a product catalog with categories, search, and detail pages',
+                    'Implement shopping cart and Stripe checkout (test mode)',
+                    'Build an admin panel for product CRUD and order management'
+                ],
+                vibe: 'Always use Stripe test mode keys. Never put real payment keys in development. Ask the AI about Stripe best practices.',
+                hints: [
+                    'Prompt: "Build an e-commerce store with product catalog, cart, Stripe checkout, and admin panel."',
+                    'Ask: "Walk me through the Stripe payment flow step by step — what happens on the client, server, and Stripe side?"'
+                ]
+            },
+            {
+                id: 38, tier: 'extreme',
+                title: 'Social Media Dashboard',
+                desc: 'Build a dashboard that aggregates content from multiple APIs (Twitter/X, GitHub, Reddit), with scheduling, analytics, and export features.',
+                stack: 'Full-stack + APIs',
+                quests: [
+                    'Connect to at least 2 social media APIs and display aggregated feeds',
+                    'Add post scheduling and queue management',
+                    'Build an analytics view: engagement metrics, charts, and CSV export'
+                ],
+                vibe: 'API rate limits will bite you. Ask the AI: "How do I implement request caching and rate limit handling for these APIs?"',
+                hints: [
+                    'Prompt: "Build a social media dashboard aggregating from GitHub and Reddit APIs. Show feeds, schedule posts, analytics."',
+                    'Ask: "How do I handle OAuth2 flows for social media APIs? Walk me through the auth flow."'
+                ]
+            },
+            {
+                id: 39, tier: 'extreme',
+                title: 'Project Management Tool',
+                desc: 'Build a project management app: teams, task assignments, Gantt charts (or timeline view), notifications, and real-time collaboration.',
+                stack: 'Full-stack + Deploy',
+                quests: [
+                    'Build team workspaces with user roles and task assignments',
+                    'Implement a Gantt chart or timeline view for project planning',
+                    'Add real-time notifications and deploy to production'
+                ],
+                vibe: 'This is a big one. Write an AGENTS.md file that describes which AI should handle which part of the codebase.',
+                hints: [
+                    'Prompt: "Build a project management tool with teams, tasks, Gantt chart, and notifications. Start with the data model."',
+                    'Ask: "Design the permission system — what can owners, admins, and members do? Show me the role matrix."'
+                ]
+            },
+            {
+                id: 40, tier: 'extreme',
+                title: 'Analytics Dashboard',
+                desc: 'Build a data analytics platform: ingest CSV/JSON data, build custom charts, date range filtering, and export reports as PDF.',
+                stack: 'Full-stack + Charts',
+                quests: [
+                    'Build data ingestion from CSV/JSON with column type detection',
+                    'Create customizable charts (line, bar, pie) with date range filters',
+                    'Add saved report templates and PDF export'
+                ],
+                vibe: 'This is your capstone Extreme project. Aim for something you\'d actually use. Show it to someone and ask for feedback.',
+                hints: [
+                    'Prompt: "Build an analytics dashboard. Upload CSV/JSON, auto-detect columns, create charts, filter by date range."',
+                    'Ask: "How do I generate PDF reports from HTML? Compare html2pdf, puppeteer, and @react-pdf approaches."'
+                ]
+            },
+
+            // ── WOW (41-45) ──
+            {
+                id: 41, tier: 'wow',
+                title: 'AI Writing Assistant',
+                desc: 'Build an LLM-powered writing editor with tone controls, style suggestions, grammar fixes, and content generation — using the OpenAI or Anthropic API.',
+                stack: 'AI API + Full-stack',
+                quests: [
+                    'Build an editor with AI-powered text generation and editing',
+                    'Add tone controls (formal, casual, persuasive) and style suggestions',
+                    'Add grammar checking, summarization, and document history'
+                ],
+                vibe: 'You\'re building an AI tool using AI tools. Meta! Write a postmortem for this project — what worked, what was hard.',
+                hints: [
+                    'Prompt: "Build an AI writing assistant using the OpenAI API. Rich editor, tone controls, grammar checking."',
+                    'Ask: "How do I stream LLM responses to show text appearing in real time? Show me the SSE approach."'
+                ]
+            },
+            {
+                id: 42, tier: 'wow',
+                title: 'Marketplace Platform',
+                desc: 'Build a two-sided marketplace: seller listings, buyer accounts, reviews, ratings, messaging between users, and payment processing.',
+                stack: 'Full-stack at Scale',
+                quests: [
+                    'Build buyer and seller accounts with listings and search',
+                    'Add reviews, ratings, and messaging between users',
+                    'Implement payment processing (Stripe Connect) and order management'
+                ],
+                vibe: 'Think about trust and safety. How do you handle disputes, fake listings, or scam users? Design for the real world.',
+                hints: [
+                    'Prompt: "Build a marketplace platform. Seller listings, buyer accounts, reviews, messaging, Stripe payments."',
+                    'Ask: "How does Stripe Connect work for marketplace payments? Explain the split payment flow."'
+                ]
+            },
+            {
+                id: 43, tier: 'wow',
+                title: 'Video / Audio Tool',
+                desc: 'Build a media tool: upload video/audio, process it (trim, convert, or transcribe), and deliver results. Use FFmpeg or an AI transcription API.',
+                stack: 'Full-stack + FFmpeg',
+                quests: [
+                    'Build upload with progress bar and file type validation',
+                    'Process media server-side (trim, convert format, or extract audio)',
+                    'Add AI transcription (Whisper API) and downloadable results'
+                ],
+                vibe: 'File uploads and server-side processing are tricky. Ask the AI to handle: upload progress, file size limits, timeouts, and job queues.',
+                hints: [
+                    'Prompt: "Build a video/audio processing tool. Upload, process with FFmpeg, transcribe with Whisper API."',
+                    'Ask: "How do I handle long-running FFmpeg jobs? Explain background job processing with a queue."'
+                ]
+            },
+            {
+                id: 44, tier: 'wow',
+                title: 'Open Source Contribution',
+                desc: 'Find a real open source project, understand its codebase, pick an issue, submit a pull request, and get it reviewed and merged.',
+                stack: 'Git + Open Source',
+                quests: [
+                    'Find a project you care about and read its CONTRIBUTING.md',
+                    'Pick an issue labeled "good first issue," fork, and build the fix',
+                    'Submit a PR with a clear description and respond to review feedback'
+                ],
+                vibe: 'This is the real test. You\'re contributing to someone else\'s codebase. Read their CLAUDE.md/CONTRIBUTING.md — follow their rules exactly.',
+                hints: [
+                    'Browse github.com/topics/good-first-issue or firstcontributions.github.io for beginner-friendly projects.',
+                    'Ask the AI: "Help me understand this codebase. Explain the folder structure and how [specific feature] works."'
+                ]
+            },
+            {
+                id: 45, tier: 'wow',
+                title: 'Your Capstone',
+                desc: 'Design your own ambitious application from scratch. Write the spec, build it with vibe coding, deploy it to the world, and present it to someone you respect.',
+                stack: 'Your Choice',
+                quests: [
+                    'Write a complete project spec: problem, users, features, tech stack',
+                    'Build and ship the application to a live URL',
+                    'Write a postmortem: what you built, what you learned, what you\'d change'
+                ],
+                vibe: 'Write a postmortem for every shipped project — what worked, what didn\'t, what surprised you. This is how you level up.',
+                hints: [
+                    'Start with: "I want to build [X]. Help me write a project spec covering: problem statement, target users, core features, tech stack, and milestones."',
+                    'When you\'re done, ask: "Review my project as a senior developer. What would you change? What\'s missing?"'
+                ]
+            }
+        ];
+
+        // ── CONSTANTS ──
+        const XP_PER_QUEST = 10;
+        const XP_STAGE_BONUS = 50;
+        const STORAGE_KEY = 'vibe-code-quest-progress';
+        const TIER_ORDER = ['easy', 'medium', 'hard', 'extreme', 'wow'];
+
+        // Pre-compute tier→stages lookup (avoids .filter() on every call)
+        var _tierStages = {};
+        TIER_ORDER.forEach(function(tid) {
+            _tierStages[tid] = STAGES.filter(function(s) { return s.tier === tid; });
+        });
+
+        // ── STATE ──
+        let state = loadState();
+
+        function defaultState() {
+            return { completedQuests: {}, completedStages: new Set(), xp: 0 };
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    return {
+                        completedQuests: parsed.completedQuests || {},
+                        completedStages: new Set(parsed.completedStages || []),
+                        xp: parsed.xp || 0
+                    };
+                }
+            } catch(e) { /* ignore */ }
+            return defaultState();
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    completedQuests: state.completedQuests,
+                    completedStages: Array.from(state.completedStages),
+                    xp: state.xp
+                }));
+            } catch(e) { /* ignore */ }
+        }
+
+        // ── HELPERS ──
+        function getStagesForTier(tierId) {
+            return _tierStages[tierId] || [];
+        }
+
+        function isTierUnlocked(tierId) {
+            const idx = TIER_ORDER.indexOf(tierId);
+            if (idx === 0) return true;
+            const prevStages = getStagesForTier(TIER_ORDER[idx - 1]);
+            return prevStages.every(function(s) { return state.completedStages.has(s.id); });
+        }
+
+        function isStageUnlocked(stage) {
+            if (!isTierUnlocked(stage.tier)) return false;
+            const tierStages = getStagesForTier(stage.tier);
+            const idx = tierStages.indexOf(stage);
+            if (idx === 0) return true;
+            return state.completedStages.has(tierStages[idx - 1].id);
+        }
+
+        function isStageCompleted(stageId) {
+            return state.completedStages.has(stageId);
+        }
+
+        function isQuestCompleted(stageId, questIdx) {
+            return !!state.completedQuests[stageId + '-' + questIdx];
+        }
+
+        function getTierCompletedStageCount(tierId) {
+            const tierStages = getStagesForTier(tierId);
+            var count = 0;
+            for (var i = 0; i < tierStages.length; i++) {
+                if (state.completedStages.has(tierStages[i].id)) count++;
+            }
+            return count;
+        }
+
+        function getTotalCompletedStages() {
+            return state.completedStages.size;
+        }
+
+        // ── RENDER ──
+        function render() {
+            const container = document.getElementById('quest-container');
+            container.innerHTML = '';
+
+            TIERS.forEach(tier => {
+                const tierStages = getStagesForTier(tier.id);
+                const unlocked = isTierUnlocked(tier.id);
+                const completedCount = getTierCompletedStageCount(tier.id);
+
+                const section = document.createElement('section');
+                section.className = 'tier-section reveal';
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tier-locked-overlay' + (unlocked ? '' : ' is-locked');
+
+                // Tier header — use h2 for proper heading hierarchy
+                wrapper.innerHTML = `
+                    <div class="tier-header" data-tier="${tier.id}">
+                        <div class="tier-icon" aria-hidden="true">${tier.icon}</div>
+                        <div class="tier-info">
+                            <h2 class="tier-name">${esc(tier.name)}</h2>
+                            <div class="tier-desc">${esc(tier.desc)}</div>
+                        </div>
+                        <span class="tier-badge">${esc(tier.badge)}</span>
+                        <span class="tier-progress-text">${completedCount} / ${tierStages.length}</span>
+                    </div>
+                    ${!unlocked ? '<div class="tier-lock-msg"><span aria-hidden="true">\u{1F512}</span> Complete all ' + TIER_ORDER[TIER_ORDER.indexOf(tier.id) - 1].toUpperCase() + ' stages to unlock</div>' : ''}
+                `;
+
+                if (unlocked) {
+                    const path = document.createElement('div');
+                    path.className = 'quest-path';
+
+                    tierStages.forEach((stage, stageIdx) => {
+                        const stageUnlocked = isStageUnlocked(stage);
+                        const completed = isStageCompleted(stage.id);
+                        const isActive = stageUnlocked && !completed;
+
+                        const card = document.createElement('div');
+                        card.className = 'stage-card reveal';
+                        card.style.setProperty('--stagger', stageIdx);
+                        if (completed) card.classList.add('is-completed');
+                        else if (isActive) card.classList.add('is-active');
+                        else card.classList.add('is-locked');
+
+                        card.dataset.stageId = stage.id;
+
+                        const totalQuestXP = stage.quests.length * XP_PER_QUEST + XP_STAGE_BONUS;
+
+                        card.innerHTML = `
+                            <div class="stage-node">
+                                <span class="stage-node-num">${stage.id}</span>
+                                <span class="stage-node-check" aria-hidden="true">\u2713</span>
+                            </div>
+                            <button class="stage-toggle" aria-expanded="false" ${!stageUnlocked ? 'disabled tabindex="-1"' : ''}>
+                                <span class="stage-num">#${stage.id}</span>
+                                <span class="stage-title">${esc(stage.title)}</span>
+                                <span class="stage-xp">${completed ? '\u2713 Done' : totalQuestXP + ' XP'}</span>
+                                <svg class="stage-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                            <div class="stage-body">
+                                <div class="stage-body-inner">
+                                    <p class="stage-desc">${esc(stage.desc)}</p>
+                                    <span class="stage-stack">${esc(stage.stack)}</span>
+                                    <div class="vibe-principle">
+                                        <div class="vibe-principle-label"><span aria-hidden="true">\u26A1</span> Vibe Principle</div>
+                                        <div class="vibe-principle-text">${esc(stage.vibe)}</div>
+                                    </div>
+                                    <div class="quests-label">Quests</div>
+                                    <ul class="quest-list">
+                                        ${stage.quests.map((q, qi) => {
+                                            const done = isQuestCompleted(stage.id, qi);
+                                            return `
+                                                <li class="quest-item ${done ? 'is-done' : ''}">
+                                                    <label class="quest-label">
+                                                        <input type="checkbox" class="quest-check" data-stage="${stage.id}" data-quest="${qi}" ${done ? 'checked' : ''} ${!stageUnlocked ? 'disabled' : ''} aria-label="${esc(q)}">
+                                                        <span class="quest-text">${esc(q)}</span>
+                                                    </label>
+                                                    <span class="quest-xp">+${XP_PER_QUEST} XP</span>
+                                                </li>
+                                            `;
+                                        }).join('')}
+                                    </ul>
+                                    <div class="hints-section">
+                                        <button class="hint-toggle" aria-expanded="false">
+                                            <span class="hint-toggle-icon" aria-hidden="true">\u{1F4A1}</span>
+                                            <span>Hint Scroll \u2014 click to reveal</span>
+                                        </button>
+                                        <div class="hint-content">
+                                            <div class="hint-content-inner">
+                                                ${stage.hints.map(h => '<p>' + esc(h) + '</p>').join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        path.appendChild(card);
+                    });
+
+                    wrapper.appendChild(path);
+                }
+
+                section.appendChild(wrapper);
+                container.appendChild(section);
+            });
+
+            updateNav();
+        }
+
+        // ── IN-PLACE DOM UPDATES (avoids full re-render on checkbox) ──
+        function updateQuestInPlace(stageId, questIdx) {
+            const cb = document.querySelector('.quest-check[data-stage="' + stageId + '"][data-quest="' + questIdx + '"]');
+            if (!cb) return;
+            const li = cb.closest('.quest-item');
+            const done = isQuestCompleted(stageId, questIdx);
+            li.classList.toggle('is-done', done);
+        }
+
+        function updateStageCard(stageId) {
+            const card = document.querySelector('.stage-card[data-stage-id="' + stageId + '"]');
+            if (!card) return;
+            const completed = isStageCompleted(stageId);
+            const stage = STAGES.find(s => s.id === stageId);
+            const stageUnlocked = isStageUnlocked(stage);
+            const isActive = stageUnlocked && !completed;
+
+            card.classList.toggle('is-completed', completed);
+            card.classList.toggle('is-active', isActive);
+            card.classList.toggle('is-locked', !stageUnlocked);
+
+            var xpSpan = card.querySelector('.stage-xp');
+            if (xpSpan) {
+                const totalQuestXP = stage.quests.length * XP_PER_QUEST + XP_STAGE_BONUS;
+                xpSpan.textContent = completed ? '\u2713 Done' : totalQuestXP + ' XP';
+            }
+        }
+
+        function unlockNextStages(stageId) {
+            // Check if completing this stage unlocked the next one in the tier
+            const stage = STAGES.find(s => s.id === stageId);
+            const tierStages = getStagesForTier(stage.tier);
+            const idx = tierStages.indexOf(stage);
+            if (idx < tierStages.length - 1) {
+                const next = tierStages[idx + 1];
+                updateStageCard(next.id);
+                // Enable checkboxes and toggle button
+                var nextCard = document.querySelector('.stage-card[data-stage-id="' + next.id + '"]');
+                if (nextCard && isStageUnlocked(next)) {
+                    nextCard.querySelectorAll('.quest-check').forEach(function(c) { c.disabled = false; });
+                    var btn = nextCard.querySelector('.stage-toggle');
+                    if (btn) { btn.disabled = false; btn.removeAttribute('tabindex'); }
+                }
+            }
+            // Check if this completes the tier — needs full re-render for next tier
+            const tierComplete = tierStages.every(s => state.completedStages.has(s.id));
+            if (tierComplete) {
+                // Update tier progress text
+                var tierHeaders = document.querySelectorAll('.tier-header[data-tier="' + stage.tier + '"] .tier-progress-text');
+                tierHeaders.forEach(function(el) { el.textContent = tierStages.length + ' / ' + tierStages.length; });
+                // Full re-render to unlock next tier
+                render();
+                setupRevealObserver();
+                // Add glow sweep to newly unlocked tier header
+                var nextTierId = TIER_ORDER[TIER_ORDER.indexOf(stage.tier) + 1];
+                if (nextTierId) {
+                    var nextHeader = document.querySelector('.tier-header[data-tier="' + nextTierId + '"]');
+                    if (nextHeader) {
+                        nextHeader.classList.add('just-unlocked');
+                        setTimeout(function() { nextHeader.classList.remove('just-unlocked'); }, 1000);
+                    }
+                }
+            } else {
+                // Just update tier progress text
+                var completedCount = getTierCompletedStageCount(stage.tier);
+                var tierProgressEls = document.querySelectorAll('.tier-header[data-tier="' + stage.tier + '"] .tier-progress-text');
+                tierProgressEls.forEach(function(el) { el.textContent = completedCount + ' / ' + tierStages.length; });
+            }
+        }
+
+        // ── EVENT DELEGATION (C1/H4 fix) ──
+        function setupDelegation() {
+            var container = document.getElementById('quest-container');
+
+            container.addEventListener('click', function(e) {
+                // Stage toggle
+                var toggle = e.target.closest('.stage-toggle:not([disabled])');
+                if (toggle) {
+                    var card = toggle.closest('.stage-card');
+                    var wasOpen = card.classList.contains('is-open');
+                    var path = card.closest('.quest-path');
+                    if (path) {
+                        path.querySelectorAll('.stage-card.is-open').forEach(function(c) {
+                            c.classList.remove('is-open');
+                            c.querySelector('.stage-toggle').setAttribute('aria-expanded', 'false');
+                        });
+                    }
+                    if (!wasOpen) {
+                        card.classList.add('is-open');
+                        toggle.setAttribute('aria-expanded', 'true');
+                    }
+                    return;
+                }
+
+                // Hint toggle
+                var hint = e.target.closest('.hint-toggle');
+                if (hint) {
+                    var content = hint.nextElementSibling;
+                    var isVis = content.classList.contains('is-visible');
+                    content.classList.toggle('is-visible');
+                    hint.setAttribute('aria-expanded', String(!isVis));
+                    return;
+                }
+            });
+
+            // Quest checkboxes — use change event
+            container.addEventListener('change', function(e) {
+                var cb = e.target.closest('.quest-check');
+                if (!cb) return;
+
+                var stageId = parseInt(cb.dataset.stage);
+                var questIdx = parseInt(cb.dataset.quest);
+                var key = stageId + '-' + questIdx;
+
+                if (cb.checked) {
+                    if (!state.completedQuests[key]) {
+                        state.completedQuests[key] = true;
+                        state.xp += XP_PER_QUEST;
+                        pulseXP();
+                    }
+                } else {
+                    if (state.completedQuests[key]) {
+                        delete state.completedQuests[key];
+                        state.xp = Math.max(0, state.xp - XP_PER_QUEST);
+                        // If stage was completed, uncomplete it
+                        if (state.completedStages.has(stageId)) {
+                            state.completedStages.delete(stageId);
+                            state.xp = Math.max(0, state.xp - XP_STAGE_BONUS);
+                        }
+                    }
+                }
+
+                // Update the quest item in place
+                updateQuestInPlace(stageId, questIdx);
+
+                // Check if all quests in stage are done
+                var stage = STAGES.find(function(s) { return s.id === stageId; });
+                var allDone = stage.quests.every(function(_, qi) { return isQuestCompleted(stageId, qi); });
+                if (allDone && !state.completedStages.has(stageId)) {
+                    state.completedStages.add(stageId);
+                    state.xp += XP_STAGE_BONUS;
+                    saveState();
+                    updateStageCard(stageId);
+                    celebrateNode(stageId);
+                    pulseXP();
+                    updateNav();
+                    unlockNextStages(stageId);
+                    showStageComplete(stage);
+                    return;
+                }
+
+                saveState();
+                updateStageCard(stageId);
+                updateNav();
+            });
+        }
+
+        function updateNav() {
+            const total = STAGES.length;
+            const done = getTotalCompletedStages();
+            const pct = Math.round((done / total) * 100);
+
+            document.getElementById('nav-xp-count').textContent = state.xp + ' XP';
+            document.getElementById('nav-progress-fill').style.width = pct + '%';
+            document.getElementById('nav-progress-label').textContent = done + ' / ' + total;
+            document.getElementById('hero-xp-total').textContent = state.xp;
+
+            const bar = document.getElementById('nav-progressbar');
+            bar.setAttribute('aria-valuenow', done);
+        }
+
+        // ── FOCUS TRAP UTILITY (C2 fix) ──
+        var _savedFocus = null;
+
+        function trapFocus(container) {
+            var focusable = container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (focusable.length === 0) return;
+            var first = focusable[0];
+            var last = focusable[focusable.length - 1];
+
+            function handler(e) {
+                if (e.key !== 'Tab') return;
+                if (e.shiftKey) {
+                    if (document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            }
+
+            container._focusTrapHandler = handler;
+            container.addEventListener('keydown', handler);
+            first.focus();
+        }
+
+        function releaseFocus(container) {
+            if (container._focusTrapHandler) {
+                container.removeEventListener('keydown', container._focusTrapHandler);
+                delete container._focusTrapHandler;
+            }
+            if (_savedFocus) {
+                _savedFocus.focus();
+                _savedFocus = null;
+            }
+        }
+
+        function openDialog(el) {
+            _savedFocus = document.activeElement;
+            el.classList.add('is-visible');
+            el.setAttribute('aria-hidden', 'false');
+            trapFocus(el);
+        }
+
+        function closeDialog(el) {
+            el.classList.remove('is-visible');
+            el.setAttribute('aria-hidden', 'true');
+            releaseFocus(el);
+        }
+
+        // ── POPUPS ──
+        function showStageComplete(stage) {
+            var overlay = document.getElementById('xp-overlay');
+            var popup = document.getElementById('xp-popup');
+            var title = document.getElementById('xp-popup-title');
+            var xp = document.getElementById('xp-popup-xp');
+            var msg = document.getElementById('xp-popup-msg');
+
+            // Check if this completes a tier
+            var tierStages = getStagesForTier(stage.tier);
+            var tierComplete = tierStages.every(function(s) { return state.completedStages.has(s.id); });
+            var tierIdx = TIER_ORDER.indexOf(stage.tier);
+            var nextTier = tierIdx < TIER_ORDER.length - 1 ? TIERS[tierIdx + 1] : null;
+
+            if (tierComplete && nextTier) {
+                title.innerHTML = '<div class="tier-unlock-title" style="color: ' + nextTier.color + '">Tier Unlocked!</div><div class="tier-unlock-name">' + esc(nextTier.icon + ' ' + nextTier.name) + '</div>';
+                xp.textContent = '+' + XP_STAGE_BONUS + ' XP bonus';
+                msg.textContent = 'You\'ve unlocked the ' + nextTier.name + ' tier. Keep building!';
+            } else if (tierComplete && !nextTier) {
+                title.textContent = '\u{1F389} All Tiers Complete!';
+                xp.textContent = state.xp + ' XP total';
+                msg.textContent = 'You\'ve mastered vibe coding. Go build something amazing.';
+            } else {
+                title.textContent = '\u2728 Stage Complete!';
+                xp.textContent = '+' + XP_STAGE_BONUS + ' XP bonus';
+                msg.textContent = stage.title + ' \u2014 done! Next quest awaits.';
+            }
+
+            overlay.classList.add('is-visible');
+            popup.classList.add('is-visible');
+            playSherma();
+
+            function closePopup() {
+                overlay.classList.remove('is-visible');
+                popup.classList.remove('is-visible');
+                overlay.removeEventListener('click', closePopup);
+            }
+
+            overlay.addEventListener('click', closePopup);
+            setTimeout(closePopup, 3000);
+        }
+
+        // ── RESET ──
+        var resetOverlay = document.getElementById('reset-overlay');
+
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            openDialog(resetOverlay);
+        });
+        document.getElementById('reset-cancel').addEventListener('click', function() {
+            closeDialog(resetOverlay);
+        });
+        document.getElementById('reset-confirm').addEventListener('click', function() {
+            state = defaultState();
+            saveState();
+            closeDialog(resetOverlay);
+            render();
+            setupRevealObserver();
+        });
+
+        // ── SAVE / LOAD / SHARE (cross-device progress) ──
+        function getStateJSON() {
+            return JSON.stringify({
+                completedQuests: state.completedQuests,
+                completedStages: Array.from(state.completedStages),
+                xp: state.xp
+            });
+        }
+
+        function importState(json) {
+            try {
+                var parsed = JSON.parse(json);
+                state = {
+                    completedQuests: parsed.completedQuests || {},
+                    completedStages: new Set(parsed.completedStages || []),
+                    xp: parsed.xp || 0
+                };
+                saveState();
+                render();
+                setupRevealObserver();
+                updateNav();
+                return true;
+            } catch(e) {
+                return false;
+            }
+        }
+
+        // Download progress as .json file
+        document.getElementById('save-btn').addEventListener('click', function() {
+            var blob = new Blob([getStateJSON()], { type: 'application/json' });
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'vibe-quest-progress.json';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+
+        // Load progress from .json file
+        var loadInput = document.getElementById('load-file-input');
+        document.getElementById('load-btn').addEventListener('click', function() {
+            loadInput.click();
+        });
+        loadInput.addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                if (importState(ev.target.result)) {
+                    // brief flash on nav to confirm
+                    pulseXP();
+                } else {
+                    alert('Could not read save file.');
+                }
+            };
+            reader.readAsText(file);
+            loadInput.value = '';
+        });
+
+        // Share — encode state as URL hash
+        document.getElementById('share-btn').addEventListener('click', function() {
+            var encoded = btoa(getStateJSON());
+            var url = window.location.origin + window.location.pathname + '#save=' + encoded;
+            navigator.clipboard.writeText(url).then(function() {
+                var btn = document.getElementById('share-btn');
+                btn.textContent = 'Copied!';
+                setTimeout(function() { btn.textContent = 'Share'; }, 1500);
+            }).catch(function() {
+                // Fallback: prompt
+                prompt('Copy this link to share your progress:', url);
+            });
+        });
+
+        // Import from URL hash on load
+        (function checkHashImport() {
+            var hash = window.location.hash;
+            if (hash.indexOf('#save=') === 0) {
+                try {
+                    var json = atob(hash.slice(6));
+                    importState(json);
+                    // Clean up URL
+                    history.replaceState(null, '', window.location.pathname);
+                } catch(e) { /* ignore bad hash */ }
+            }
+        })();
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (resetOverlay.classList.contains('is-visible')) {
+                    closeDialog(resetOverlay);
+                }
+                var xpOverlay = document.getElementById('xp-overlay');
+                if (xpOverlay.classList.contains('is-visible')) {
+                    xpOverlay.classList.remove('is-visible');
+                    document.getElementById('xp-popup').classList.remove('is-visible');
+                }
+            }
+        });
+
+        // ── SCROLL REVEAL ──
+        var _revealObserver = null;
+        function setupRevealObserver() {
+            if (_revealObserver) _revealObserver.disconnect();
+            // Skip if user prefers reduced motion
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelectorAll('.reveal').forEach(function(el) {
+                    el.classList.add('is-revealed');
+                });
+                return;
+            }
+            _revealObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                        _revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('.reveal:not(.is-revealed)').forEach(function(el) {
+                _revealObserver.observe(el);
+            });
+        }
+
+        // ── XP FEEDBACK ANIMATION ──
+        function pulseXP() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            var xpEl = document.querySelector('.nav-xp');
+            var barEl = document.querySelector('.nav-progress-bar');
+            if (xpEl) {
+                xpEl.classList.remove('bump');
+                void xpEl.offsetWidth; // force reflow to re-trigger
+                xpEl.classList.add('bump');
+            }
+            if (barEl) {
+                barEl.classList.remove('glow');
+                void barEl.offsetWidth;
+                barEl.classList.add('glow');
+            }
+        }
+
+        // ── STAGE NODE CELEBRATION ──
+        function celebrateNode(stageId) {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            var card = document.querySelector('.stage-card[data-stage-id="' + stageId + '"]');
+            if (card) {
+                card.classList.add('just-completed');
+                setTimeout(function() { card.classList.remove('just-completed'); }, 700);
+            }
+        }
+
+        // ── INIT ──
+        render();
+        setupDelegation();
+        setupRevealObserver();
+
+    })();
+    </script>
+</body>
+</html>
